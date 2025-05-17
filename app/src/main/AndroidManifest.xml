@@ -13,6 +13,30 @@
         android:theme="@style/Theme.ReservasSalao"
         tools:targetApi="31">
         <activity
+            android:name=".salao.AgendamentoSalaoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".salao.SalaoHomeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".cliente.AgendarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".cliente.AgendamentosClienteActivity"
+            android:exported="false" />
+        <activity
+            android:name=".cliente.ClienteHomeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".auth.CadastroSalaoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".auth.CadastroClienteActivity"
+            android:exported="false" />
+        <activity
+            android:name=".auth.LoginActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
