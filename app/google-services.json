@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "505554434066",
+    "project_id": "salao-agendamento-82b9c",
+    "storage_bucket": "salao-agendamento-82b9c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:505554434066:android:83e984ce3e8991be07c0cb",
+        "android_client_info": {
+          "package_name": "br.edu.fatecpg.reservassalao"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBgHLgxCI06vJnWZaYmvZ3JK0KtNR4aF1w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
