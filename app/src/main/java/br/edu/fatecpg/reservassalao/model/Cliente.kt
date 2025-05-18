@@ -7,7 +7,7 @@ data class Cliente(
     override val tipo: String = "cliente",
     override val telefone: String = "",
     override val endereco:String = "",
-    val cpf: Int,
+    val cpf: String = "",
     val agendamentos: List<Agendamento> = listOf()
 
 ) : Usuario(id,nome,email,tipo,telefone,endereco)

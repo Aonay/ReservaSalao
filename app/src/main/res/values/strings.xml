@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">ReservasSalao</string>
+    <string name="confirme_sua_senha">Confirme sua senha</string>
+    <string name="cpf">CPF</string>
 </resources>

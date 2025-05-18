@@ -4,12 +4,12 @@ data class Salao(
     override val id: String = "",
     override val nome: String = "",
     override val email: String = "",
-    override val tipo: String = "cliente",
+    override val tipo: String = "salao",
     override val telefone: String = "",
-    override val endereco:String = "",
-    val cnpj:Int,
-    val imagemUrl:String = "",
-    val horarioFuncioamento: String = "",
-    val servicos: List<Servico> = listOf(),
-    val agendamentos: List<Agendamento> = listOf()
-): Usuario(id,nome,email,tipo,telefone,endereco)
+    override val endereco: String = "",
+    val cnpj: String = "",
+    val imagemUrl: String = "",
+    val horarioFuncionamento: String = "",
+    val servicos: List<Servico> = emptyList(),
+    val agendamentos: List<Agendamento> = emptyList()
+) : Usuario(id, nome, email, tipo, telefone, endereco)
