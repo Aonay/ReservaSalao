@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.edu.fatecpg.reservassalao.databinding.ActivityClienteHomeBinding
 import br.edu.fatecpg.reservassalao.model.Salao
+import br.edu.fatecpg.reservassalao.view.auth.LoginActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
@@ -32,9 +33,17 @@ class ClienteHomeActivity : AppCompatActivity() {
 
         auth = Firebase.auth
 
+        // Verifica se o usuário está logado
+        if (auth.currentUser == null) {
+            startActivity(Intent(this, LoginActivity::class.java))
+            finish()
+            return
+        }
+
         adapter = SalaoAdapter(saloesList) { salao ->
             val intent = Intent(this, AgendarActivity::class.java)
             intent.putExtra("salao", salao)
+            startActivity(intent)
             Toast.makeText(this, "Selecionou salão: ${salao.nome}", Toast.LENGTH_SHORT).show()
         }
 
@@ -46,8 +55,16 @@ class ClienteHomeActivity : AppCompatActivity() {
 
         binding.btnLogout.setOnClickListener {
             auth.signOut()
+            startActivity(Intent(this, LoginActivity::class.java))
             finish()
         }
+
+        //  Botão de histórico
+        /*
+        binding.btnHistorico.setOnClickListener {
+            startActivity(Intent(this, HistoricoClienteActivity::class.java))
+        }
+        */
 
         binding.edtBuscarSalao.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
@@ -83,7 +100,7 @@ class ClienteHomeActivity : AppCompatActivity() {
             .addOnSuccessListener { result ->
                 saloesList.clear()
                 for (document in result) {
-                    val salao = document.toObject(Salao::class.java)
+                    val salao = document.toObject(Salao::class.java).copy(id = document.id)
                     saloesList.add(salao)
                 }
                 adapter.notifyDataSetChanged()
@@ -102,7 +119,7 @@ class ClienteHomeActivity : AppCompatActivity() {
             .addOnSuccessListener { result ->
                 saloesList.clear()
                 for (document in result) {
-                    val salao = document.toObject(Salao::class.java)
+                    val salao = document.toObject(Salao::class.java).copy(id = document.id)
                     saloesList.add(salao)
                 }
                 adapter.notifyDataSetChanged()
