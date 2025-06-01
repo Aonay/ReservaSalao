@@ -28,10 +28,6 @@ class LoginActivity : AppCompatActivity() {
 
         auth = Firebase.auth
 
-        if (auth.currentUser != null) {
-            checkUserTypeAndRedirect(auth.currentUser?.uid ?: "")
-        }
-
         setupLoginButton()
     }
 
@@ -86,25 +82,44 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun checkUserTypeAndRedirect(userId: String) {
-        db.collection("usuarios").document(userId)
+        // Verifica se é um cliente
+        db.collection("clientes").document(userId)
             .get()
-            .addOnSuccessListener { document ->
-                if (document.exists()) {
-                    val tipo = document.getString("tipo") ?: "cliente"
-
-                    when (tipo) {
-                        "salao" -> redirectToSalaoHome()
-                        else -> redirectToClienteHome()
-                    }
-                } else {
+            .addOnSuccessListener { clienteDoc ->
+                if (clienteDoc.exists()) {
                     redirectToClienteHome()
+                } else {
+                    // Verifica se é um salão
+                    db.collection("saloes").document(userId)
+                        .get()
+                        .addOnSuccessListener { salaoDoc ->
+                            if (salaoDoc.exists()) {
+                                redirectToSalaoHome()
+                            } else {
+                                Toast.makeText(
+                                    this,
+                                    "Usuário não encontrado no sistema.",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                auth.signOut()
+                            }
+                        }
+                        .addOnFailureListener { e ->
+                            Log.e("LoginActivity", "Erro ao buscar salão", e)
+                            Toast.makeText(
+                                this,
+                                "Erro ao verificar perfil de salão.",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            auth.signOut()
+                        }
                 }
             }
             .addOnFailureListener { e ->
-                Log.e("LoginActivity", "Erro ao verificar tipo de usuário", e)
+                Log.e("LoginActivity", "Erro ao buscar cliente", e)
                 Toast.makeText(
                     this,
-                    "Erro ao verificar perfil. Tente novamente.",
+                    "Erro ao verificar perfil de cliente.",
                     Toast.LENGTH_SHORT
                 ).show()
                 auth.signOut()

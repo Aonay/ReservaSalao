@@ -28,7 +28,7 @@
         android:layout_marginTop="42dp"
         android:ems="10"
         android:hint="Senha"
-        android:inputType="text"
+        android:inputType="textPassword"
         android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"

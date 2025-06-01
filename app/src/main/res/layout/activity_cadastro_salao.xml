@@ -11,12 +11,11 @@
         android:id="@+id/imgPreview"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="28dp"
+        android:contentDescription="Prévia da imagem"
         android:scaleType="centerCrop"
-        android:src="@drawable/ic_launcher_background"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -135,15 +134,15 @@
         android:id="@+id/edtImagemUrl"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="200dp"
         android:ems="10"
         android:hint="URL da imagem"
         android:inputType="text"
         android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imgPreview" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

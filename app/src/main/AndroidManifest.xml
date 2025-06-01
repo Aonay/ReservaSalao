@@ -16,6 +16,15 @@
         android:theme="@style/Theme.ReservasSalao"
         tools:targetApi="31">
         <activity
+            android:name=".view.salao.EditarPerfilSalaoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.salao.HistoricoSalaoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.salao.ServicoSalaoActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.salao.AgendamentoSalaoActivity"
             android:exported="false" />
         <activity

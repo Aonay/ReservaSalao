@@ -25,9 +25,15 @@ class CadastroClienteActivity : AppCompatActivity() {
             val nome = binding.edtNome.text.toString()
             val email = binding.edtEmail.text.toString()
             val senha = binding.edtSenha.text.toString()
+            val confirmSenha = binding.edtConfirmSenha.text.toString()
             val telefone = binding.edtTelefone.text.toString()
             val endereco = binding.edtEndereco.text.toString()
             val cpf = binding.edtCpf.text.toString()
+
+            if (senha != confirmSenha) {
+                Toast.makeText(this, "As senhas não coincidem", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
 
             Log.d("Cadastro", "Dados recebidos: $nome, $email, $telefone, $endereco, $cpf")
 
