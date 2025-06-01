@@ -133,11 +133,12 @@
 
     <EditText
         android:id="@+id/edtImagemUrl"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="267dp"
+        android:layout_height="50dp"
         android:layout_marginTop="8dp"
+        android:background="@drawable/edit_text_background"
         android:ems="10"
-        android:hint="URL da imagem"
+        android:hint=" URL da imagem"
         android:inputType="text"
         android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="parent"
