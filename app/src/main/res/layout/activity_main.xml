@@ -5,67 +5,51 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
+    android:background="@drawable/gradiente_background"
     tools:context=".MainActivity">
 
-
-    <Button
-        android:id="@+id/btnLogin"
-        android:layout_width="110dp"
-        android:layout_height="51dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginBottom="50dp"
-        android:backgroundTint="#9289e6"
-        android:fontFamily="@font/adlam_display"
-        android:text="Entrar"
-        android:textSize="20sp"
-        app:cornerRadius="4sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <ImageView
+        android:id="@+id/logoImage"
+        android:layout_width="295dp"
+        android:layout_height="233dp"
+        android:layout_marginTop="136dp"
+        android:contentDescription="Logo AuraTech"
+        android:src="@drawable/aura"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.962"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.062" />
-
-    <Button
-        android:id="@+id/btnCadastroCliente"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
-        android:layout_marginTop="369dp"
-        android:layout_marginBottom="168dp"
-        android:text="Cadastro Cliente"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnLogin"
-        app:layout_constraintVertical_bias="1.0" />
-
-    <Button
-        android:id="@+id/btnCadastroSalao"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="369dp"
-        android:layout_marginEnd="44dp"
-        android:layout_marginBottom="168dp"
-        android:text="Cadastro Salão"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnLogin"
-        app:layout_constraintVertical_bias="1.0" />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:fontFamily="@font/adlam_display"
-        android:text="AURA"
-        android:textColor="#3AEFDD"
-        android:textSize="60sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/appDescription"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:fontFamily="@font/afacad_bold"
+        android:gravity="center"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:text="Agende e gerencie serviços de beleza com facilidade."
+        android:textColor="@color/app_theme"
+        android:textSize="28dp"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/logoImage" />
+
+    <Button
+        android:id="@+id/btnComecar"
+        android:layout_width="234dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="56dp"
+        android:backgroundTint="@color/app_theme"
+        android:fontFamily="@font/afacad_bold"
+        android:text="Começar"
+        android:textSize="28dp"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/appDescription" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
