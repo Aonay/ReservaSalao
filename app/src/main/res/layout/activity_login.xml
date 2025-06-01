@@ -5,46 +5,229 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/app_theme"
     tools:context=".view.auth.LoginActivity">
 
-    <EditText
-        android:id="@+id/edtEmail"
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="192dp"
-        android:ems="10"
-        android:hint="E-mail"
-        android:inputType="text"
-        android:minHeight="48dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="178dp" />
 
-    <EditText
-        android:id="@+id/edtSenha"
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_sair"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="42dp"
-        android:ems="10"
-        android:hint="Senha"
-        android:inputType="textPassword"
-        android:minHeight="48dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="24dp"
+        android:clickable="true"
+        android:contentDescription="Sair"
+        app:backgroundTint="@color/white"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edtEmail" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/outline_arrow_back_ios_new_24"
+        app:tint="@color/app_theme" />
 
-    <Button
-        android:id="@+id/btnLogin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:layout_marginBottom="309dp"
-        android:text="Entrar"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/app_theme"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edtSenha" />
+        app:layout_constraintTop_toTopOf="@+id/guideline"
+        app:layout_constraintVertical_bias="1.0">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="188dp"
+                android:fontFamily="@font/afacad_bold"
+                android:text="Esqueci minha senha"
+                android:textSize="19dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.856"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:textColor="@color/app_theme"
+                tools:ignore="TextSizeCheck" />
+
+            <EditText
+                android:id="@+id/edtEmail"
+                android:layout_width="336dp"
+                android:layout_height="51dp"
+                android:layout_marginTop="64dp"
+                android:layout_marginEnd="24dp"
+                android:background="@drawable/edit_text_background"
+                android:drawableStart="@drawable/e_mail"
+                android:drawablePadding="8dp"
+                android:ems="10"
+                android:hint="E-mail"
+                android:inputType="text"
+                android:minHeight="48dp"
+                android:padding="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.745"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/edtSenha"
+                android:layout_width="337dp"
+                android:layout_height="53dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/edit_text_background"
+                android:drawableStart="@drawable/cadeado"
+                android:drawablePadding="8dp"
+                android:ems="10"
+                android:hint="Senha"
+                android:inputType="textPassword"
+                android:minHeight="48dp"
+                android:padding="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/edtEmail" />
+
+            <Button
+                android:id="@+id/btn_login"
+                android:layout_width="338dp"
+                android:layout_height="61dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="52dp"
+                android:layout_marginEnd="16dp"
+                android:width="200dp"
+                android:backgroundTint="#02b49a"
+                android:fontFamily="@font/afacad_bold"
+                android:text="Entrar"
+                android:textSize="26dp"
+                app:cornerRadius="4sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/edtSenha" />
+
+            <TextView
+                android:id="@+id/textViewCadastro"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="36dp"
+                android:fontFamily="@font/afacad_bold"
+                android:text="Não tem conta? Cadastre-se como:"
+                android:textColor="@color/app_theme"
+                android:textSize="22dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.494"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btn_login" />
+
+            <LinearLayout
+                android:id="@+id/layoutBotoesCadastro"
+                android:layout_width="297dp"
+                android:layout_height="103dp"
+                android:layout_marginTop="59dp"
+                android:layout_marginBottom="36dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewCadastro">
+
+                <ImageButton
+                    android:id="@+id/btnCadastroCliente"
+                    android:layout_width="110dp"
+                    android:layout_height="100dp"
+                    android:layout_marginEnd="24dp"
+                    android:background="@drawable/borda_quadrada"
+
+                    android:contentDescription="Cadastrar como Cliente"
+                    android:src="@drawable/cliente" />
+
+                <ImageButton
+                    android:id="@+id/btnCadastroSalao"
+                    android:layout_width="111dp"
+                    android:layout_height="100dp"
+                    android:background="@drawable/borda_quadrada"
+                    android:contentDescription="Cadastrar como Salão"
+                    android:src="@drawable/salao" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="100dp"
+                android:layout_marginTop="27dp"
+                android:layout_marginEnd="79dp"
+                android:layout_marginBottom="144dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/afacad_bold"
+                android:text="CLIENTE"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/textView9"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewCadastro" />
+
+            <TextView
+                android:id="@+id/textView9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="27dp"
+                android:layout_marginEnd="112dp"
+                android:layout_marginBottom="144dp"
+                android:fontFamily="@font/afacad_bold"
+                android:text="SALÃO"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewCadastro" />
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="13dp"
+                android:fontFamily="@font/afacad_bold"
+                android:text="Login"
+                android:textSize="35dp"
+                app:layout_constraintBottom_toTopOf="@+id/edtEmail"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_begin="327dp" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="189dp"
+        android:layout_height="122dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/cardView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/aura" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

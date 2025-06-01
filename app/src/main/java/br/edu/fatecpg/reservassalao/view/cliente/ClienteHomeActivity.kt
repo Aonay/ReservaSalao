@@ -1,76 +1,114 @@
 package br.edu.fatecpg.reservassalao.view.cliente
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import br.edu.fatecpg.reservassalao.databinding.ActivityClienteHomeBinding
+import br.edu.fatecpg.reservassalao.model.Salao
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import coil.load
 
 class ClienteHomeActivity : AppCompatActivity() {
-    private val binding by lazy {
-        ActivityClienteHomeBinding.inflate(layoutInflater)
-    }
+
+    private lateinit var binding: ActivityClienteHomeBinding
     private lateinit var auth: FirebaseAuth
     private val db = Firebase.firestore
+
+    private val saloesList = mutableListOf<Salao>()
+    private lateinit var adapter: SalaoAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
+        binding = ActivityClienteHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         auth = Firebase.auth
-        loadSalao()
-        setupLogoutButton()
-    }
 
-    private fun loadSalao() {
-        // Substitua "ID_DO_SALAO" pelo ID real do salão que você quer exibir
-        val salaoId = "MiwN9CDQthOW92JBBFxbbr6xp5z1"
+        adapter = SalaoAdapter(saloesList) { salao ->
+            val intent = Intent(this, AgendarActivity::class.java)
+            intent.putExtra("salao", salao)
+            Toast.makeText(this, "Selecionou salão: ${salao.nome}", Toast.LENGTH_SHORT).show()
+        }
 
-        db.collection("saloes").document(salaoId)
-            .get()
-            .addOnSuccessListener { document ->
-                if (document.exists()) {
-                    val nome = document.getString("nome") ?: ""
-                    val endereco = document.getString("endereco") ?: ""
-                    val telefone = document.getString("telefone") ?: ""
-                    val horario = document.getString("horarioFuncionamento") ?: "Horário não informado"
-                    val imagemUrl = document.getString("imagemUrl") ?: ""
+        binding.recyclerSaloes.layoutManager = LinearLayoutManager(this)
+        binding.recyclerSaloes.adapter = adapter
 
-                    binding.txtNome.text = nome
-                    binding.txtEndereco.text = endereco
-                    binding.txtTelefone.text = telefone
-                    binding.txtHorario.text = horario
+        carregarNomeCliente()
+        carregarSaloes()
 
-                    if (imagemUrl.isNotEmpty()) {
-                        binding.imgSalao.load(imagemUrl) {
-                            crossfade(true)
-                            placeholder(android.R.drawable.ic_menu_gallery)
-                            error(android.R.drawable.ic_menu_report_image)
-                        }
-                    }
-                } else {
-                    Toast.makeText(this, "Salão não encontrado", Toast.LENGTH_SHORT).show()
-                }
-            }
-            .addOnFailureListener { exception ->
-                Toast.makeText(
-                    this,
-                    "Erro ao carregar salão: ${exception.message}",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-    }
-
-    private fun setupLogoutButton() {
         binding.btnLogout.setOnClickListener {
             auth.signOut()
             finish()
         }
+
+        binding.edtBuscarSalao.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                val termo = binding.edtBuscarSalao.text.toString().trim()
+                if (termo.isNotEmpty()) {
+                    buscarSaloes(termo)
+                } else {
+                    carregarSaloes()
+                }
+                true
+            } else {
+                false
+            }
+        }
+    }
+
+    private fun carregarNomeCliente() {
+        val idCliente = auth.currentUser?.uid ?: return
+
+        db.collection("clientes").document(idCliente)
+            .get()
+            .addOnSuccessListener {
+                val nome = it.getString("nome") ?: "Cliente"
+                binding.txtOlaCliente.text = "Olá, $nome!"
+            }
+            .addOnFailureListener {
+                Toast.makeText(this, "Erro ao carregar nome do cliente", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    private fun carregarSaloes() {
+        db.collection("saloes").get()
+            .addOnSuccessListener { result ->
+                saloesList.clear()
+                for (document in result) {
+                    val salao = document.toObject(Salao::class.java)
+                    saloesList.add(salao)
+                }
+                adapter.notifyDataSetChanged()
+            }
+            .addOnFailureListener {
+                Toast.makeText(this, "Erro ao carregar salões", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    private fun buscarSaloes(termo: String) {
+        db.collection("saloes")
+            .orderBy("nome")
+            .startAt(termo)
+            .endAt(termo + "\uf8ff")
+            .get()
+            .addOnSuccessListener { result ->
+                saloesList.clear()
+                for (document in result) {
+                    val salao = document.toObject(Salao::class.java)
+                    saloesList.add(salao)
+                }
+                adapter.notifyDataSetChanged()
+            }
+            .addOnFailureListener {
+                Toast.makeText(this, "Erro na busca", Toast.LENGTH_SHORT).show()
+            }
     }
 }

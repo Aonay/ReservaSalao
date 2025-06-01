@@ -1,5 +1,7 @@
 package br.edu.fatecpg.reservassalao.model
 
+import java.io.Serializable
+
 data class Salao(
     override val id: String = "",
     override val nome: String = "",
@@ -12,4 +14,4 @@ data class Salao(
     val horarioFuncionamento: String = "",
     val servicos: List<Servico> = emptyList(),
     val agendamentos: List<Agendamento> = emptyList()
-) : Usuario(id, nome, email, tipo, telefone, endereco)
+) : Usuario(id, nome, email, tipo, telefone, endereco), Serializable
