@@ -11,6 +11,7 @@
     <color name="app_theme">#032b33</color>
     <color name="app_theme_light">#F6FBFF</color>
     <color name="edit_theme_light">#03A9F4</color>
+    <color name="button_theme_light">#02b49a</color>
     <color name="edit_text_border">#032b33</color>
     <color name="edit_text_background">#F6FBFF</color>
 </resources>

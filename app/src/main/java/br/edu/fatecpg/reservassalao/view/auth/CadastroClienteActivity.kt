@@ -21,6 +21,10 @@ class CadastroClienteActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(binding.root)
 
+        binding.btnVoltar.setOnClickListener {
+            finish()
+        }
+
         binding.btnCadastrar.setOnClickListener {
             val nome = binding.edtNome.text.toString()
             val email = binding.edtEmail.text.toString()

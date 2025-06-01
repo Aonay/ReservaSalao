@@ -4,6 +4,6 @@
 
     <solid android:color="@color/edit_text_background"/>
     <corners android:radius="6dp"/>
-    <stroke android:width="2dp"
+    <stroke android:width="2.5dp"
       android:color="@color/edit_text_border"/>
 </shape>

@@ -1,5 +1,6 @@
 package br.edu.fatecpg.reservassalao.view.auth
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
@@ -22,6 +23,10 @@ class CadastroSalaoActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(binding.root)
+
+        binding.btnVoltar.setOnClickListener {
+            finish()
+        }
 
         binding.edtImagemUrl.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -58,6 +63,12 @@ class CadastroSalaoActivity : AppCompatActivity() {
             viewModel.cadastrarSalao(nome, email, senha, telefone, endereco, cnpj, imagemUrl,){ sucesso, mensagem ->
                 Toast.makeText(this, mensagem, Toast.LENGTH_SHORT).show()
                 if(sucesso) finish()
+            }
+
+            binding.btnVoltar.setOnClickListener {
+                val intent = Intent(this, LoginActivity::class.java)
+                startActivity(intent)
+                finish()
             }
         }
     }

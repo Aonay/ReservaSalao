@@ -33,6 +33,7 @@ class LoginActivity : AppCompatActivity() {
         }
 
         setupLoginButton()
+        setupCadastroButtons()
     }
 
     private fun setupLoginButton() {
@@ -126,4 +127,17 @@ class LoginActivity : AppCompatActivity() {
         startActivity(intent)
         finish()
     }
+
+    private fun setupCadastroButtons() {
+        binding.btnCadastroCliente.setOnClickListener {
+            val intent = Intent(this, CadastroClienteActivity::class.java)
+            startActivity(intent)
+        }
+
+        binding.btnCadastroSalao.setOnClickListener {
+            val intent = Intent(this, CadastroSalaoActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
 }
