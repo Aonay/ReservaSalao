@@ -12,19 +12,19 @@
         android:id="@+id/txtOlaCliente"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
         android:text="Olá, Fulano!"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textStyle="bold"
-        android:layout_marginBottom="16dp" />
+        android:textStyle="bold" />
 
     <EditText
         android:id="@+id/edtBuscarSalao"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Buscar salão..."
+        android:background="@android:drawable/edit_text"
         android:drawableStart="@android:drawable/ic_menu_search"
-        android:padding="8dp"
-        android:background="@android:drawable/edit_text" />
+        android:hint="Buscar salão..."
+        android:padding="8dp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerSaloes"
@@ -35,9 +35,10 @@
 
     <Button
         android:id="@+id/btnLogout"
+        style="@style/MeuBotaoPadrao"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Sair"
-        android:layout_marginTop="16dp" />
+        android:layout_marginTop="16dp"
+        android:text="Sair" />
 
 </LinearLayout>
