@@ -5,6 +5,7 @@
         <item name="android:textColor">@color/app_theme</item>
         <item name="android:textSize">@dimen/texto_grande</item>
         <item name="shapeAppearance">@style/BotaoShape</item>
+        <item name="android:fontFamily">@font/afacad_bold</item>
     </style>
 
     <!-- Estilo que define cantos arredondados -->
