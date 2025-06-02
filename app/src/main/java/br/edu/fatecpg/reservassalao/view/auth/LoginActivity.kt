@@ -29,6 +29,15 @@ class LoginActivity : AppCompatActivity() {
         auth = Firebase.auth
 
         setupLoginButton()
+
+        binding.btnCadastroCliente.setOnClickListener {
+            startActivity(Intent(this, CadastroClienteActivity::class.java))
+        }
+
+        binding.btnCadastroSalao.setOnClickListener {
+            startActivity(Intent(this, CadastroSalaoActivity::class.java))
+        }
+
     }
 
     private fun setupLoginButton() {
