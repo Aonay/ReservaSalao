@@ -49,23 +49,25 @@
 
         <Button
             android:id="@+id/btnEditarPerfil"
+            style="@style/MeuBotaoPadrao"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
             android:text="Editar Perfil"
-            app:layout_constraintTop_toBottomOf="@id/tvHorarioFuncionamento"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="12dp" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvHorarioFuncionamento" />
 
         <Button
             android:id="@+id/btnAdicionarServico"
+            style="@style/MeuBotaoPadrao"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:text="Adicionar Serviço"
-            app:layout_constraintTop_toBottomOf="@id/btnEditarPerfil"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="8dp" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btnEditarPerfil" />
 
         <TextView
             android:id="@+id/tvServicosTitle"
@@ -111,14 +113,14 @@
 
         <Button
             android:id="@+id/btnVerTodosAgendamentos"
+            style="@style/MeuBotaoPadrao"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Ver Todos os Agendamentos"
-            app:layout_constraintTop_toBottomOf="@id/layoutAgendamentos"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="16dp"
-            android:layout_marginBottom="24dp" />
+            android:text="Ver Todos os Agendamentos"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layoutAgendamentos" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

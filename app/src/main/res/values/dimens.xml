@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Espaçamentos -->
+    <dimen name="padding_pequeno">8dp</dimen>
+    <dimen name="padding_padrao">16dp</dimen>
+    <dimen name="padding_grande">24dp</dimen>
+
+    <!-- Texto -->
+    <dimen name="texto_pequeno">12sp</dimen>
+    <dimen name="texto_padrao">16sp</dimen>
+    <dimen name="texto_grande">20sp</dimen>
+
+    <!-- Bordas e cantos -->
+    <dimen name="botao_corner_radius">4dp</dimen>
+    <dimen name="borda_fina">1dp</dimen>
+    <dimen name="borda_media">2dp</dimen>
+
+
+</resources>

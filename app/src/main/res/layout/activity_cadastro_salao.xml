@@ -212,7 +212,7 @@
         android:text="Confirmar"
         android:textColor="@color/app_theme"
         android:textSize="20sp"
-        app:cornerRadius="4sp"
+        app:cornerRadius="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
