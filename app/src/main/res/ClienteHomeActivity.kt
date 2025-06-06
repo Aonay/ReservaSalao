@@ -1,5 +1,3 @@
-package br.edu.fatecpg.reservassalao.view.cliente
-
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
@@ -9,7 +7,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.edu.fatecpg.reservassalao.R
 import br.edu.fatecpg.reservassalao.databinding.ActivityClienteHomeBinding
@@ -45,13 +42,20 @@ class ClienteHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
             return
         }
 
+        // Toolbar e Drawer Toggle
         setSupportActionBar(binding.toolbar)
-        supportActionBar?.setDisplayShowTitleEnabled(false)
+        val toggle = ActionBarDrawerToggle(
+            this,
+            binding.drawerLayout,
+            binding.toolbar,
+            R.string.open_drawer,
+            R.string.close_drawer
+        )
+        binding.drawerLayout.addDrawerListener(toggle)
+        toggle.syncState()
 
-        binding.btnMenu.setOnClickListener {
-            Toast.makeText(this, "Menu clicado", Toast.LENGTH_SHORT).show()
-            binding.drawerLayout.openDrawer(GravityCompat.START)
-        }
+        // Menu lateral
+        binding.navigationView.setNavigationItemSelectedListener(this)
 
         // RecyclerView
         adapter = SalaoAdapter(saloesList) { salao ->
@@ -61,7 +65,7 @@ class ClienteHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
             Toast.makeText(this, "Selecionou salão: ${salao.nome}", Toast.LENGTH_SHORT).show()
         }
 
-        binding.recyclerSaloes.layoutManager = GridLayoutManager(this, 2)
+        binding.recyclerSaloes.layoutManager = LinearLayoutManager(this)
         binding.recyclerSaloes.adapter = adapter
 
         carregarNomeCliente()
@@ -145,12 +149,13 @@ class ClienteHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_agendamentos -> {
-                startActivity(Intent(this, AgendamentosClienteActivity::class.java))
+                startActivity(Intent(this, MeusAgendamentosActivity::class.java))
+            }
+            R.id.menu_perfil -> {
+                startActivity(Intent(this, PerfilClienteActivity::class.java))
             }
             R.id.menu_sair -> {
-                auth.signOut()
-                startActivity(Intent(this, LoginActivity::class.java))
-                finish()
+                logout()
             }
         }
 

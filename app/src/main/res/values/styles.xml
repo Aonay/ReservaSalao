@@ -12,6 +12,5 @@
     <style name="BotaoShape" parent="ShapeAppearance.Material3.SmallComponent">
         <item name="cornerSize">4dp</item>
     </style>
-    
-    
+
 </resources>

@@ -2,4 +2,6 @@
     <string name="app_name">ReservasSalao</string>
     <string name="confirme_sua_senha">Confirme sua senha</string>
     <string name="cpf">CPF</string>
+    <string name="open_drawer">Abrir menu</string>
+    <string name="close_drawer">Fechar menu</string>
 </resources>
