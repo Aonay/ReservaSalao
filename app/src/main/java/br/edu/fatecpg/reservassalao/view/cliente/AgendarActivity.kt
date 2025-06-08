@@ -1,6 +1,7 @@
 package br.edu.fatecpg.reservassalao.view.cliente
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -77,6 +78,9 @@ class AgendarActivity : AppCompatActivity() {
             .collection("servicos")
             .get()
             .addOnSuccessListener { result ->
+                if (result.isEmpty) {
+                    Log.d("AgendarActivity", "Nenhum serviço encontrado para o salão ${salao.id}")
+                }
                 val nomesServicos = result.map { it.getString("nome") ?: "Serviço" }
                 val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, nomesServicos)
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)

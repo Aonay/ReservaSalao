@@ -93,7 +93,7 @@ class SalaoHomeActivity : AppCompatActivity() {
 
     private fun carregarAgendamentos(idSalao: String) {
         db.collection("agendamentos")
-            .whereEqualTo("idSalao", idSalao)
+            .whereEqualTo("Salaoid", idSalao)
             .orderBy("data", com.google.firebase.firestore.Query.Direction.DESCENDING)
             .limit(3)
             .get()

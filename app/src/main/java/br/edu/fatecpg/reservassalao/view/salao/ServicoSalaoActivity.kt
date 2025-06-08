@@ -64,15 +64,21 @@ class ServicoSalaoActivity : AppCompatActivity() {
                 idSalao = idSalao
             )
 
-            db.collection("servicos").document(idServico)
-                .set(servico)
-                .addOnSuccessListener {
-                    Toast.makeText(this, "Serviço cadastrado com sucesso!", Toast.LENGTH_SHORT).show()
-                    finish() // volta pra tela anterior
-                }
-                .addOnFailureListener {
-                    Toast.makeText(this, "Erro ao salvar serviço.", Toast.LENGTH_SHORT).show()
-                }
+            // Salva na subcoleção do salão
+            val salaoRef =
+                db.collection("saloes").document(idSalao).collection("servicos").document(idServico)
+            // Salva também na coleção global de serviços
+            val servicoGlobalRef = db.collection("servicos").document(idServico)
+
+            salaoRef.set(servico).continueWithTask {
+                servicoGlobalRef.set(servico)
+            }.addOnSuccessListener {
+                Toast.makeText(this, "Serviço cadastrado com sucesso!", Toast.LENGTH_SHORT).show()
+                finish()
+            }.addOnFailureListener {
+                Toast.makeText(this, "Erro ao salvar serviço: ${it.message}", Toast.LENGTH_SHORT)
+                    .show()
+            }
         }
     }
 }
