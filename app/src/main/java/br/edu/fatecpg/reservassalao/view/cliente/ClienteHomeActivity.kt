@@ -6,11 +6,9 @@ import android.view.MenuItem
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import br.edu.fatecpg.reservassalao.R
 import br.edu.fatecpg.reservassalao.databinding.ActivityClienteHomeBinding
 import br.edu.fatecpg.reservassalao.model.Salao
@@ -36,6 +34,8 @@ class ClienteHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
 
         binding = ActivityClienteHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        binding.navigationView.setNavigationItemSelectedListener(this)
 
         auth = Firebase.auth
 
@@ -67,10 +67,6 @@ class ClienteHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         carregarNomeCliente()
         carregarSaloes()
 
-        // Logout direto (botão visível na tela)
-        binding.btnLogout.setOnClickListener {
-            logout()
-        }
 
         // Buscar salões
         binding.edtBuscarSalao.setOnEditorActionListener { _, actionId, _ ->
@@ -141,26 +137,19 @@ class ClienteHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
             }
     }
 
-    // Tratamento dos itens do menu lateral
-    override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.menu_agendamentos -> {
-                startActivity(Intent(this, AgendamentosClienteActivity::class.java))
+        override fun onNavigationItemSelected(item: MenuItem): Boolean {
+            when (item.itemId) {
+                R.id.menu_agendamentos -> {
+                    startActivity(Intent(this, AgendamentosClienteActivity::class.java))
+                }
+                R.id.menu_sair -> {
+                    auth.signOut()
+                    Toast.makeText(this, "Sessão encerrada", Toast.LENGTH_SHORT).show()
+                    finish()
+                }
             }
-            R.id.menu_sair -> {
-                auth.signOut()
-                startActivity(Intent(this, LoginActivity::class.java))
-                finish()
-            }
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
+            return true
         }
 
-        binding.drawerLayout.closeDrawer(GravityCompat.START)
-        return true
-    }
-
-    private fun logout() {
-        auth.signOut()
-        startActivity(Intent(this, LoginActivity::class.java))
-        finish()
-    }
 }

@@ -1,17 +1,23 @@
 package br.edu.fatecpg.reservassalao.view.salao
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
 import androidx.core.widget.addTextChangedListener
+import br.edu.fatecpg.reservassalao.R
 import br.edu.fatecpg.reservassalao.databinding.ActivityEditarPerfilSalaoBinding
 import br.edu.fatecpg.reservassalao.model.Salao
+import br.edu.fatecpg.reservassalao.view.auth.LoginActivity
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import coil.load
+import com.google.android.material.navigation.NavigationView
 
-class EditarPerfilSalaoActivity : AppCompatActivity() {
+class EditarPerfilSalaoActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private val binding by lazy {
         ActivityEditarPerfilSalaoBinding.inflate(layoutInflater)
     }
@@ -22,6 +28,12 @@ class EditarPerfilSalaoActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
+        binding.btnMenu.setOnClickListener {
+            binding.drawerLayout.openDrawer(GravityCompat.START)
+        }
+
+        binding.navigationView.setNavigationItemSelectedListener(this)
 
         val userId = auth.currentUser?.uid
         if (userId == null) {
@@ -48,13 +60,13 @@ class EditarPerfilSalaoActivity : AppCompatActivity() {
                     binding.etImagemUrl.setText(salao.imagemUrl)
 
                     if (!salao.imagemUrl.isNullOrEmpty()) {
-                        binding.imgPreview.load(salao.imagemUrl) {
+                        binding.imgSalao.load(salao.imagemUrl) {
                             crossfade(true)
                             placeholder(android.R.drawable.ic_menu_gallery)
                             error(android.R.drawable.ic_menu_report_image)
                         }
                     } else {
-                        binding.imgPreview.setImageResource(android.R.drawable.ic_menu_gallery)
+                        binding.imgSalao.setImageResource(android.R.drawable.ic_menu_gallery)
                     }
                 }
             }
@@ -65,13 +77,13 @@ class EditarPerfilSalaoActivity : AppCompatActivity() {
         binding.etImagemUrl.addTextChangedListener { text ->
             val url = text.toString()
             if (url.isNotEmpty()) {
-                binding.imgPreview.load(url) {
+                binding.imgSalao.load(url) {
                     crossfade(true)
                     placeholder(android.R.drawable.ic_menu_gallery)
                     error(android.R.drawable.ic_menu_report_image)
                 }
             } else {
-                binding.imgPreview.setImageResource(android.R.drawable.ic_menu_gallery)
+                binding.imgSalao.setImageResource(android.R.drawable.ic_menu_gallery)
             }
         }
 
@@ -111,5 +123,26 @@ class EditarPerfilSalaoActivity : AppCompatActivity() {
                     binding.btnSalvar.isEnabled = true
                 }
         }
+    }
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.menu_home -> startActivity(Intent(this, SalaoHomeActivity::class.java))
+            R.id.menu_servicos -> startActivity(Intent(this, ServicoSalaoActivity::class.java))
+            R.id.menu_editar_perfil -> startActivity(Intent(this, EditarPerfilSalaoActivity::class.java))
+            R.id.menu_historico -> startActivity(Intent(this, HistoricoSalaoActivity::class.java))
+            R.id.menu_sair -> {
+                auth.signOut()
+                Toast.makeText(this, "Sessão encerrada", Toast.LENGTH_SHORT).show()
+
+                val intent = Intent(this, LoginActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(intent)
+
+                finish()
+            }
+        }
+        binding.drawerLayout.closeDrawer(GravityCompat.START)
+        return true
     }
 }

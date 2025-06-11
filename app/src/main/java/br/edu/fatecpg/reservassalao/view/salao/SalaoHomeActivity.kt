@@ -2,24 +2,31 @@ package br.edu.fatecpg.reservassalao.view.salao
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
+import br.edu.fatecpg.reservassalao.R
 import br.edu.fatecpg.reservassalao.databinding.ActivitySalaoHomeBinding
 import br.edu.fatecpg.reservassalao.model.Salao
 import br.edu.fatecpg.reservassalao.model.Servico
+import br.edu.fatecpg.reservassalao.view.auth.LoginActivity
 import coil.load
+import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
-class SalaoHomeActivity : AppCompatActivity() {
+class SalaoHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener{
     private val binding by lazy {
         ActivitySalaoHomeBinding.inflate(layoutInflater)
     }
 
+    private lateinit var drawerLayout: DrawerLayout
     private val auth: FirebaseAuth by lazy { Firebase.auth }
     private val db = Firebase.firestore
 
@@ -27,6 +34,14 @@ class SalaoHomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(binding.root)
+
+        drawerLayout = findViewById(R.id.drawerLayout)
+        val navigationView: NavigationView = findViewById(R.id.navigationView)
+        navigationView.setNavigationItemSelectedListener(this)
+
+        // Atualizar o nome do cabeçalho
+        val headerView = navigationView.getHeaderView(0)
+        val txtNomeHeader = headerView.findViewById<TextView>(R.id.txtNomeHeader)
 
         val userId = auth.currentUser?.uid
 
@@ -53,12 +68,8 @@ class SalaoHomeActivity : AppCompatActivity() {
                 }
         }
 
-        binding.btnAdicionarServico.setOnClickListener {
-            startActivity(Intent(this, ServicoSalaoActivity::class.java))
-        }
-
-        binding.btnEditarPerfil.setOnClickListener {
-            startActivity(Intent(this, EditarPerfilSalaoActivity::class.java))
+        binding.btnMenu.setOnClickListener {
+            drawerLayout.openDrawer(GravityCompat.START)
         }
 
         binding.btnVerTodosAgendamentos.setOnClickListener {
@@ -122,4 +133,26 @@ class SalaoHomeActivity : AppCompatActivity() {
                 Toast.makeText(this, "Erro ao carregar agendamentos: ${it.message}", Toast.LENGTH_SHORT).show()
             }
     }
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.menu_home -> startActivity(Intent(this, SalaoHomeActivity::class.java))
+            R.id.menu_servicos -> startActivity(Intent(this, ServicoSalaoActivity::class.java))
+            R.id.menu_editar_perfil -> startActivity(Intent(this, EditarPerfilSalaoActivity::class.java))
+            R.id.menu_historico -> startActivity(Intent(this, HistoricoSalaoActivity::class.java))
+            R.id.menu_sair -> {
+                auth.signOut()
+                Toast.makeText(this, "Sessão encerrada", Toast.LENGTH_SHORT).show()
+
+                val intent = Intent(this, LoginActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(intent)
+
+                finish()
+            }
+        }
+        binding.drawerLayout.closeDrawer(GravityCompat.START)
+        return true
+    }
+
 }
