@@ -2,6 +2,7 @@ package br.edu.fatecpg.reservassalao.view.cliente
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
@@ -123,13 +124,16 @@ class ClienteHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     }
 
     private fun buscarSaloes(termo: String) {
+        Log.d("DEBUG_BUSCA", "Buscando por: $termo")
+        val termoLower = termo.trim().lowercase()
         db.collection("saloes")
-            .orderBy("nome")
-            .startAt(termo)
-            .endAt(termo + "\uf8ff")
+            .orderBy("nome_lowercase")
+            .startAt(termoLower)
+            .endAt(termoLower + "\uf8ff")
             .get()
             .addOnSuccessListener { result ->
                 saloesList.clear()
+                Log.d("DEBUG_BUSCA", "Encontrados ${result.size()} salões")
                 for (document in result) {
                     val salao = document.toObject(Salao::class.java).copy(id = document.id)
                     saloesList.add(salao)
@@ -137,6 +141,7 @@ class ClienteHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
                 adapter.notifyDataSetChanged()
             }
             .addOnFailureListener {
+                Log.e("DEBUG_BUSCA", "Erro na busca: ${it.message}")
                 Toast.makeText(this, "Erro na busca", Toast.LENGTH_SHORT).show()
             }
     }

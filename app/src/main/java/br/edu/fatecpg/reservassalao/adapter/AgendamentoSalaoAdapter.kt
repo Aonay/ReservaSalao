@@ -1,4 +1,4 @@
-package br.edu.fatecpg.reservassalao.view.cliente
+package br.edu.fatecpg.reservassalao.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,10 +6,11 @@ import androidx.recyclerview.widget.RecyclerView
 import br.edu.fatecpg.reservassalao.databinding.ItemAgendamentoBinding
 import br.edu.fatecpg.reservassalao.model.Agendamento
 import java.text.SimpleDateFormat
-import java.util.Locale
+import java.util.*
 
-class AgendamentoAdapter(private val agendamentos: List<Agendamento>) :
-    RecyclerView.Adapter<AgendamentoAdapter.ViewHolder>() {
+class AgendamentoSalaoAdapter(
+    private val agendamentos: List<Triple<Agendamento, String, String>>
+) : RecyclerView.Adapter<AgendamentoSalaoAdapter.ViewHolder>() {
 
     class ViewHolder(val binding: ItemAgendamentoBinding) :
         RecyclerView.ViewHolder(binding.root)
@@ -26,15 +27,13 @@ class AgendamentoAdapter(private val agendamentos: List<Agendamento>) :
     override fun getItemCount(): Int = agendamentos.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val agendamento = agendamentos[position]
+        val (agendamento, nomeCliente, nomeServico) = agendamentos[position]
         val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
 
-        holder.binding.txtSalao.text = "Salão: ${agendamento.idSalao}"
-        holder.binding.txtServico.text = "Serviço: ${agendamento.idServico}"
+        holder.binding.txtSalao.text = "Cliente: $nomeCliente"
+        holder.binding.txtServico.text = "Serviço: $nomeServico"
         holder.binding.txtData.text = "Data: ${sdf.format(agendamento.data)}"
         holder.binding.txtHora.text = "Hora: ${agendamento.hora}"
         holder.binding.txtStatus.text = "Status: ${agendamento.status}"
     }
 }
-
-

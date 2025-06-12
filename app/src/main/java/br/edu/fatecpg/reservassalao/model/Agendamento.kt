@@ -1,5 +1,6 @@
 package br.edu.fatecpg.reservassalao.model
 
+import java.io.Serializable
 import java.util.Date
 
 data class Agendamento(
@@ -9,4 +10,4 @@ data class Agendamento(
     val data: Date = Date(),
     val hora: String = "",
     val status: String = ""
-)
+): Serializable

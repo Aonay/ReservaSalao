@@ -1,12 +1,15 @@
 package br.edu.fatecpg.reservassalao.view.cliente
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.drawerlayout.widget.DrawerLayout
+import androidx.recyclerview.widget.LinearLayoutManager
 import br.edu.fatecpg.reservassalao.databinding.ActivityAgendamentosClienteBinding
+import br.edu.fatecpg.reservassalao.model.Agendamento
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
 class AgendamentosClienteActivity : AppCompatActivity() {
@@ -15,6 +18,9 @@ class AgendamentosClienteActivity : AppCompatActivity() {
     }
 
     private lateinit var auth: FirebaseAuth
+    private val db = Firebase.firestore
+    private lateinit var adapter: AgendamentoAdapter
+    private val listaAgendamentos = mutableListOf<Agendamento>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,17 +28,37 @@ class AgendamentosClienteActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         auth = Firebase.auth
+        val idUsuario = auth.currentUser?.uid ?: return
+
+        // Inicializa RecyclerView
+        adapter = AgendamentoAdapter(listaAgendamentos)
+        binding.recyclerAgendamentos.layoutManager = LinearLayoutManager(this)
+        binding.recyclerAgendamentos.adapter = adapter
 
         // Abertura do menu lateral
         binding.btnMenu.setOnClickListener {
             binding.drawerLayout.openDrawer(binding.navigationView)
         }
 
-        // Você pode adicionar comportamento de clique nos itens do menu aqui se quiser
         binding.navigationView.setNavigationItemSelectedListener { menuItem ->
-            // Ex: if (menuItem.itemId == R.id.menu_sair) { ... }
             binding.drawerLayout.closeDrawers()
             true
         }
+
+        // Buscar agendamentos do Firebase
+        db.collection("agendamentos")
+            .whereEqualTo("idCliente", idUsuario)
+            .get()
+            .addOnSuccessListener { result ->
+                listaAgendamentos.clear()
+                for (document in result) {
+                    val agendamento = document.toObject(Agendamento::class.java)
+                    listaAgendamentos.add(agendamento)
+                }
+                adapter.notifyDataSetChanged()
+            }
+            .addOnFailureListener { e ->
+                Log.e("AgendamentosCliente", "Erro ao buscar agendamentos", e)
+            }
     }
 }

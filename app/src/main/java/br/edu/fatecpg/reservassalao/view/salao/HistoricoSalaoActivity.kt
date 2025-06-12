@@ -4,9 +4,9 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import br.edu.fatecpg.reservassalao.adapter.AgendamentoAdapter
 import br.edu.fatecpg.reservassalao.databinding.ActivityHistoricoSalaoBinding
 import br.edu.fatecpg.reservassalao.model.Agendamento
+import br.edu.fatecpg.reservassalao.adapter.AgendamentoSalaoAdapter
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -57,7 +57,8 @@ class HistoricoSalaoActivity : AppCompatActivity() {
 
                                         if (carregados == docs.size) {
                                             lista.sortByDescending { it.first.data }
-                                            binding.recyclerAgendamentos.adapter = AgendamentoAdapter(lista)
+                                            binding.recyclerAgendamentos.adapter =
+                                                AgendamentoSalaoAdapter(lista)
                                         }
                                     }
                             }

@@ -15,10 +15,11 @@ import com.bumptech.glide.Glide
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FieldValue
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-
 class AgendarActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAgendarBinding
     private val db = Firebase.firestore
@@ -92,6 +93,7 @@ class AgendarActivity : AppCompatActivity() {
     }
 
     private fun setupBotaoAgendar() {
+        val userId = Firebase.auth.currentUser?.uid
         binding.btnAgendar.setOnClickListener {
             val servico = binding.spinnerServicos.selectedItem?.toString()
             val data = binding.edtData.text.toString()
@@ -104,20 +106,68 @@ class AgendarActivity : AppCompatActivity() {
 
             val agendamento = hashMapOf(
                 "salaoId" to salao.id,
+                "userId" to userId,
                 "servico" to servico,
                 "data" to data,
-                "horario" to horario
+                "horario" to horario,
+                "status" to "pendente"
             )
 
+            val userId = Firebase.auth.currentUser?.uid
+            if (userId == null) {
+                Toast.makeText(this, "Usuário não autenticado", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            // Verifica se já existe um agendamento para o mesmo salão, data, horário e serviço
+            db.collection("agendamentos")
+                .whereEqualTo("salaoId", salao.id)
+                .whereEqualTo("userId", userId)
+                .whereEqualTo("data", data)
+                .whereEqualTo("horario", horario)
+                .whereEqualTo("servico", servico)
+                .whereEqualTo("status", "pendente")
+                .get()
+                .addOnSuccessListener { documents ->
+                    if (!documents.isEmpty) {
+                        Toast.makeText(this, "Esse horário já está ocupado para o serviço escolhido.", Toast.LENGTH_LONG).show()
+                    } else {
+                        // Prossegue com o agendamento se estiver livre
             db.collection("agendamentos")
                 .add(agendamento)
-                .addOnSuccessListener {
-                    Toast.makeText(this, "Agendado com sucesso!", Toast.LENGTH_SHORT).show()
-                    finish()
-                }
+                .addOnSuccessListener { agendamentoRef ->
+                 val agendamentoId = agendamentoRef.id
+
+            db.collection("clientes").document(userId)
+                 .update("agendamentos", FieldValue.arrayUnion(agendamentoId))
+                 .addOnSuccessListener {
+
+            db.collection("saloes").document(salao.id)
+                 .collection("agendamentos").document(agendamentoId)
+                 .set(agendamento)
+                 .addOnSuccessListener {
+                        Toast.makeText(this, "Agendado com sucesso!", Toast.LENGTH_SHORT).show()
+                  finish()
+                   }
+
+                  .addOnFailureListener {
+                        Toast.makeText(this, "Erro ao salvar no salão", Toast.LENGTH_SHORT).show()
+                   }
+               }
+                  .addOnFailureListener {
+                        Toast.makeText(this, "Erro ao salvar no cliente", Toast.LENGTH_SHORT).show()
+                   }
+               }
+                  .addOnFailureListener {
+                        Toast.makeText(this, "Erro ao agendar", Toast.LENGTH_SHORT).show()
+                   }
+            }
+        }
                 .addOnFailureListener {
-                    Toast.makeText(this, "Erro ao agendar", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "Erro ao verificar disponibilidade", Toast.LENGTH_SHORT).show()
                 }
+
         }
     }
+
 }
