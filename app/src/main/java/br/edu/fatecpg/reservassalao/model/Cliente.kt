@@ -10,6 +10,6 @@ data class Cliente(
     override val telefone: String = "",
     override val endereco:String = "",
     val cpf: String = "",
-    val agendamentos: List<Agendamento> = listOf()
+    val agendamentos: List<Agendamento> = emptyList()
 
 ) : Usuario(id,nome,email,tipo,telefone,endereco), Serializable
