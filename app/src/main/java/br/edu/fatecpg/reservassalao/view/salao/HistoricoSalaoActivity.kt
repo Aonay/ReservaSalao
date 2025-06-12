@@ -2,6 +2,7 @@ package br.edu.fatecpg.reservassalao.view.salao
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -12,13 +13,15 @@ import br.edu.fatecpg.reservassalao.R
 import br.edu.fatecpg.reservassalao.adapter.AgendamentoAdapter
 import br.edu.fatecpg.reservassalao.databinding.ActivityHistoricoSalaoBinding
 import br.edu.fatecpg.reservassalao.model.Agendamento
+import br.edu.fatecpg.reservassalao.model.AgendamentoCompleto
 import br.edu.fatecpg.reservassalao.view.auth.LoginActivity
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
-class HistoricoSalaoActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener{
+
+class HistoricoSalaoActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var toggle: ActionBarDrawerToggle
     private val binding by lazy { ActivityHistoricoSalaoBinding.inflate(layoutInflater) }
@@ -32,26 +35,25 @@ class HistoricoSalaoActivity : AppCompatActivity(), NavigationView.OnNavigationI
         binding.btnMenu.setOnClickListener {
             binding.drawerLayout.openDrawer(GravityCompat.START)
         }
-
         binding.navigationView.setNavigationItemSelectedListener(this)
+        binding.recyclerAgendamentos.layoutManager = LinearLayoutManager(this)
 
         val userId = auth.currentUser?.uid ?: return
-
-        binding.recyclerAgendamentos.layoutManager = LinearLayoutManager(this)
 
         db.collection("agendamentos")
             .whereEqualTo("idSalao", userId)
             .get()
             .addOnSuccessListener { snapshot ->
-                val lista = mutableListOf<Triple<Agendamento, String, String>>()
-
+                val lista = mutableListOf<AgendamentoCompleto>()
                 val docs = snapshot.documents
+
                 if (docs.isEmpty()) {
                     Toast.makeText(this, "Nenhum agendamento encontrado", Toast.LENGTH_SHORT).show()
                     return@addOnSuccessListener
                 }
 
                 var carregados = 0
+
                 for (doc in docs) {
                     val agendamento = doc.toObject(Agendamento::class.java)
                     if (agendamento != null) {
@@ -66,15 +68,24 @@ class HistoricoSalaoActivity : AppCompatActivity(), NavigationView.OnNavigationI
                                     .addOnSuccessListener { servicoDoc ->
                                         val nomeServico = servicoDoc.getString("nome") ?: "Serviço"
 
-                                        lista.add(Triple(agendamento, nomeCliente, nomeServico))
+                                        lista.add(AgendamentoCompleto(agendamento, nomeCliente, nomeServico))
                                         carregados++
 
                                         if (carregados == docs.size) {
-                                            lista.sortByDescending { it.first.data }
+                                            // Ordena por data decrescente
+                                            lista.sortByDescending { it.agendamento.data }
                                             binding.recyclerAgendamentos.adapter = AgendamentoAdapter(lista)
                                         }
                                     }
+                                    .addOnFailureListener {
+                                        Toast.makeText(this, "Erro ao buscar serviço", Toast.LENGTH_SHORT).show()
+                                    }
                             }
+                            .addOnFailureListener {
+                                Toast.makeText(this, "Erro ao buscar cliente", Toast.LENGTH_SHORT).show()
+                            }
+                    } else {
+                        carregados++
                     }
                 }
             }
@@ -92,11 +103,9 @@ class HistoricoSalaoActivity : AppCompatActivity(), NavigationView.OnNavigationI
             R.id.menu_sair -> {
                 auth.signOut()
                 Toast.makeText(this, "Sessão encerrada", Toast.LENGTH_SHORT).show()
-
                 val intent = Intent(this, LoginActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 startActivity(intent)
-
                 finish()
             }
         }
