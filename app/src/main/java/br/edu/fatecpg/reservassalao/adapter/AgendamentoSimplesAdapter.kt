@@ -5,12 +5,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import br.edu.fatecpg.reservassalao.databinding.ItemAgendamentoBinding
-import br.edu.fatecpg.reservassalao.model.AgendamentoCompleto
+import br.edu.fatecpg.reservassalao.model.Agendamento
 import java.text.SimpleDateFormat
 import java.util.*
 
-class AgendamentoAdapter(private val agendamentos: List<AgendamentoCompleto>) :
-    RecyclerView.Adapter<AgendamentoAdapter.ViewHolder>() {
+class AgendamentoSimplesAdapter(private val agendamentos: List<Agendamento>) :
+    RecyclerView.Adapter<AgendamentoSimplesAdapter.ViewHolder>() {
 
     class ViewHolder(val binding: ItemAgendamentoBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -25,14 +25,12 @@ class AgendamentoAdapter(private val agendamentos: List<AgendamentoCompleto>) :
         val item = agendamentos[position]
         val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
 
-        holder.binding.txtData.text = "Data: ${sdf.format(item.agendamento.data)}"
-        holder.binding.txtHora.text = "Hora: ${item.agendamento.hora}"
-        holder.binding.txtStatus.text = "Status: ${item.agendamento.status}"
-        holder.binding.txtCliente.text = "Cliente: ${item.nomeCliente}"
-        holder.binding.txtServico.text = "Serviço: ${item.nomeServico}"
+        holder.binding.txtData.text = "Data: ${sdf.format(item.data)}"
+        holder.binding.txtHora.text = "Hora: ${item.hora}"
+        holder.binding.txtStatus.text = "Status: ${item.status}"
 
-        // Garantir que os campos estão visíveis aqui
-        holder.binding.txtCliente.visibility = View.VISIBLE
-        holder.binding.txtServico.visibility = View.VISIBLE
+        // Como não temos cliente e serviço aqui, escondemos esses campos
+        holder.binding.txtCliente.visibility = View.GONE
+        holder.binding.txtServico.visibility = View.GONE
     }
 }

@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import br.edu.fatecpg.reservassalao.R
 import br.edu.fatecpg.reservassalao.databinding.ActivityAgendarBinding
+import br.edu.fatecpg.reservassalao.model.Agendamento
 import br.edu.fatecpg.reservassalao.model.Salao
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -15,6 +16,7 @@ import com.bumptech.glide.Glide
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
+import com.google.firebase.auth.FirebaseAuth
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -93,31 +95,65 @@ class AgendarActivity : AppCompatActivity() {
 
     private fun setupBotaoAgendar() {
         binding.btnAgendar.setOnClickListener {
-            val servico = binding.spinnerServicos.selectedItem?.toString()
-            val data = binding.edtData.text.toString()
-            val horario = binding.edtHorario.text.toString()
+            val nomeServico = binding.spinnerServicos.selectedItem?.toString()
+            val dataTexto = binding.edtData.text.toString()
+            val horarioTexto = binding.edtHorario.text.toString()
 
-            if (servico.isNullOrEmpty() || data.isEmpty() || horario.isEmpty()) {
+            if (nomeServico.isNullOrEmpty() || dataTexto.isEmpty() || horarioTexto.isEmpty()) {
                 Toast.makeText(this, "Preencha todos os campos", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            val agendamento = hashMapOf(
-                "salaoId" to salao.id,
-                "servico" to servico,
-                "data" to data,
-                "horario" to horario
-            )
+            // Converte a data (String) para Date
+            val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+            val dataConvertida: Date = try {
+                sdf.parse(dataTexto) ?: Date()
+            } catch (e: Exception) {
+                Toast.makeText(this, "Data inválida", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
 
-            db.collection("agendamentos")
-                .add(agendamento)
-                .addOnSuccessListener {
-                    Toast.makeText(this, "Agendado com sucesso!", Toast.LENGTH_SHORT).show()
-                    finish()
+            val idCliente = FirebaseAuth.getInstance().currentUser?.uid
+            if (idCliente == null) {
+                Toast.makeText(this, "Erro ao obter usuário", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            // Buscar ID do serviço com base no nome
+            db.collection("saloes").document(salao.id)
+                .collection("servicos")
+                .whereEqualTo("nome", nomeServico)
+                .get()
+                .addOnSuccessListener { result ->
+                    val idServico = result.documents.firstOrNull()?.id
+                    if (idServico == null) {
+                        Toast.makeText(this, "Erro ao localizar serviço", Toast.LENGTH_SHORT).show()
+                        return@addOnSuccessListener
+                    }
+
+                    val agendamento = Agendamento(
+                        idServico = idServico,
+                        idSalao = salao.id,
+                        idCliente = idCliente,
+                        data = dataConvertida,
+                        hora = horarioTexto,
+                        status = "pendente"
+                    )
+
+                    db.collection("agendamentos")
+                        .add(agendamento)
+                        .addOnSuccessListener {
+                            Toast.makeText(this, "Agendado com sucesso!", Toast.LENGTH_SHORT).show()
+                            finish()
+                        }
+                        .addOnFailureListener {
+                            Toast.makeText(this, "Erro ao agendar", Toast.LENGTH_SHORT).show()
+                        }
                 }
                 .addOnFailureListener {
-                    Toast.makeText(this, "Erro ao agendar", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Erro ao buscar serviço", Toast.LENGTH_SHORT).show()
                 }
         }
     }
+
 }
