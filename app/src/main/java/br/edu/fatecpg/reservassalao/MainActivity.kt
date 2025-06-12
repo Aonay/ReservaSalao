@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import br.edu.fatecpg.reservassalao.databinding.ActivityMainBinding
@@ -25,18 +26,42 @@ class MainActivity : AppCompatActivity() {
 
         auth = Firebase.auth
 
-        // Esconde o botão "Começar" inicialmente
+        // Esconde todos os elementos inicialmente
         binding.btnComecar.visibility = android.view.View.GONE
+        binding.logoImage.visibility = android.view.View.GONE
+        binding.appDescription.visibility = android.view.View.GONE
 
-        // Espera 2 segundos para exibir o botão
-        Handler(Looper.getMainLooper()).postDelayed({
-            binding.btnComecar.visibility = android.view.View.VISIBLE
+        // Exibe todos os elementos após 2 segundos
+        Handler(Looper.getMainLooper()).postDelayed({binding.logoImage.apply {
+            alpha = 0f
+            visibility = View.VISIBLE
+            animate().alpha(1f).setDuration(500).start()
+        }
+
+            binding.appDescription.apply {
+                alpha = 0f
+                visibility = View.VISIBLE
+                animate().alpha(1f).setDuration(500).start()
+            }
+
+            binding.btnComecar.apply {
+                alpha = 0f
+                visibility = View.VISIBLE
+                animate().alpha(1f).setDuration(500).start()
+            }
+
         }, 2000)
 
-        binding.btnComecar.setOnClickListener {
-            val intent = Intent(this@MainActivity, LoginActivity::class.java)
-            startActivity(intent)
-            finish()
-        }
+        // Ações de clique
+        binding.btnComecar.setOnClickListener { irParaLogin() }
+        binding.logoImage.setOnClickListener { irParaLogin() }
+        binding.appDescription.setOnClickListener { irParaLogin() }
+    }
+
+    private fun irParaLogin() {
+        val intent = Intent(this@MainActivity, LoginActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 }
+

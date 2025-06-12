@@ -13,5 +13,5 @@ data class Salao(
     val imagemUrl: String = "",
     val horarioFuncionamento: String = "",
     val servicos: List<Servico> = emptyList(),
-    val agendamentos: List<Agendamento> = emptyList()
+    val agendamentos: List<String> = emptyList()
 ) : Usuario(id, nome, email, tipo, telefone, endereco), Serializable

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="MeuBotaoPadrao" parent="Widget.Material3.Button">
-        <item name="android:backgroundTint">@color/button_theme_light</item>
-        <item name="android:textColor">@color/app_theme</item>
+        <item name="android:backgroundTint">@color/app_theme</item>
+        <item name="android:textColor">@color/white</item>
         <item name="android:textSize">@dimen/texto_grande</item>
         <item name="shapeAppearance">@style/BotaoShape</item>
         <item name="android:fontFamily">@font/afacad_bold</item>
@@ -11,6 +11,17 @@
     <!-- Estilo que define cantos arredondados -->
     <style name="BotaoShape" parent="ShapeAppearance.Material3.SmallComponent">
         <item name="cornerSize">4dp</item>
+    </style>
+
+    <!-- cantos da imagem arredondados -->
+    <style name="RoundedImageStyle" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="borderRound">2dp</item>
+        <item name="color">@color/app_theme</item>
+        <item name="cornerSizeTopLeft">16dp</item>
+        <item name="cornerSizeTopRight">16dp</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
+        <item name="cornerSizeBottomRight">0dp</item>
     </style>
 
 </resources>

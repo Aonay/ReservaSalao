@@ -1,112 +1,242 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.drawerlayout.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/layoutEditarPerfil"
+    android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
     tools:context=".view.salao.EditarPerfilSalaoActivity">
 
-    <ImageView
-        android:id="@+id/imgPreview"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_marginTop="24dp"
-        android:contentDescription="Prévia da imagem"
-        android:scaleType="centerCrop"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+    <!-- Conteúdo Principal -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/etImagemUrl"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:hint="URL da Imagem de Perfil"
-        android:minHeight="48dp"
-        app:layout_constraintTop_toBottomOf="@id/imgPreview"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        <!-- Toolbar -->
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="134dp"
+            android:background="@color/app_theme"
+            android:elevation="4dp"
+            android:minHeight="?attr/actionBarSize"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:contentInsetStart="0dp">
 
-    <EditText
-        android:id="@+id/etNome"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="Nome do Salão"
-        android:minHeight="48dp"
-        android:layout_marginTop="12dp"
-        app:layout_constraintTop_toBottomOf="@id/etImagemUrl"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="9dp"
+                android:paddingEnd="20dp">
 
-    <EditText
-        android:id="@+id/etEmail"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="Email"
-        android:inputType="textEmailAddress"
-        android:enabled="false"
-        android:minHeight="48dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@id/etNome"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+                <ImageView
+                    android:id="@+id/logoImage"
+                    android:layout_width="150dp"
+                    android:layout_height="85dp"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginBottom="1dp"
+                    android:contentDescription="Logo"
+                    android:src="@drawable/aura"  />
 
-    <EditText
-        android:id="@+id/etTelefone"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="Telefone"
-        android:minHeight="48dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@id/etEmail"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="102dp"
+                    android:layout_weight="1" />
 
-    <EditText
-        android:id="@+id/etEndereco"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="Endereço"
-        android:minHeight="48dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@id/etTelefone"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+                <ImageButton
+                    android:id="@+id/btnMenu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="Menu"
+                    android:src="@drawable/ic_menu"
+                    app:tint="@color/app_theme_light"
+                    tools:ignore="TouchTargetSizeCheck" />
+            </LinearLayout>
+        </androidx.appcompat.widget.Toolbar>
+        <!-- Título da página -->
 
-    <EditText
-        android:id="@+id/etCnpj"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="CNPJ"
-        android:minHeight="48dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@id/etEndereco"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        <!-- Scroll com formulário -->
+        <ScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:padding="16dp"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
 
-    <EditText
-        android:id="@+id/etHorario"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="Horário de Funcionamento"
-        android:minHeight="48dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@id/etCnpj"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+            <!-- Card com formulário -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                android:padding="16dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="6dp">
 
-    <Button
-        android:id="@+id/btnSalvar"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Salvar Alterações"
-        android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@id/etHorario"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/imgSalao"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:layout_marginTop="8dp"
+                        android:contentDescription="Imagem do salão"
+                        android:scaleType="centerCrop"
+                        app:civ_border_color="@color/edit_theme_light"
+                        app:civ_border_width="2dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <EditText
+                        android:id="@+id/etImagemUrl"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="64dp"
+                        android:background="@drawable/edit_text_background"
+                        android:fontFamily="@font/afacad"
+                        android:hint="URL da Imagem de Perfil"
+                        android:minHeight="48dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/imgSalao" />
+
+                    <EditText
+                        android:id="@+id/etNome"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:background="@drawable/edit_text_background"
+                        android:fontFamily="@font/afacad"
+                        android:hint="Nome do Salão"
+                        android:minHeight="48dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/etImagemUrl" />
+
+                    <EditText
+                        android:id="@+id/etEmail"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/edit_text_background"
+                        android:enabled="false"
+                        android:fontFamily="@font/afacad"
+                        android:hint="Email"
+                        android:inputType="textEmailAddress"
+                        android:minHeight="48dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/etNome" />
+
+                    <EditText
+                        android:id="@+id/etTelefone"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/edit_text_background"
+                        android:fontFamily="@font/afacad"
+                        android:hint="Telefone"
+                        android:minHeight="48dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/etEmail" />
+
+                    <EditText
+                        android:id="@+id/etEndereco"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/edit_text_background"
+                        android:fontFamily="@font/afacad"
+                        android:hint="Endereço"
+                        android:minHeight="48dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/etTelefone" />
+
+                    <EditText
+                        android:id="@+id/etCnpj"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/edit_text_background"
+                        android:fontFamily="@font/afacad"
+                        android:hint="CNPJ"
+                        android:minHeight="48dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/etEndereco" />
+
+                    <EditText
+                        android:id="@+id/etHorario"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/edit_text_background"
+                        android:fontFamily="@font/afacad"
+                        android:hint="Horário de Funcionamento"
+                        android:minHeight="48dp"
+                        android:textSize="18sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/etCnpj" />
+
+                    <Button
+                        android:id="@+id/btnSalvar"
+                        android:layout_width="359dp"
+                        android:layout_height="52dp"
+                        android:layout_marginTop="8dp"
+                        android:backgroundTint="@color/app_theme"
+                        android:fontFamily="@font/afacad_bold"
+                        android:text="Salvar Alterações"
+                        android:textColor="@android:color/white"
+                        android:textSize="18sp"
+                        app:cornerRadius="12dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/etHorario" />
+
+                    <TextView
+                        android:id="@+id/tvTitulo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginBottom="6dp"
+                        android:fontFamily="@font/afacad_bold"
+                        android:text="Edite seu perfil"
+                        android:textColor="@color/app_theme"
+                        android:textSize="25sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toTopOf="@+id/etImagemUrl"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/imgSalao"
+                        app:layout_constraintVertical_bias="0.0" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+        </ScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Menu Lateral -->
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navigationView"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:headerLayout="@layout/nav_header_salao"
+        app:menu="@menu/menu_salao" />
+
+</androidx.drawerlayout.widget.DrawerLayout>

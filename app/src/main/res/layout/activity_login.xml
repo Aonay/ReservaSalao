@@ -27,7 +27,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/outline_arrow_back_ios_new_24"
-        app:tint="@color/app_theme" />
+        app:tint="@color/app_theme"
+        app:fabSize="mini" />
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardView"
@@ -49,13 +50,13 @@
                 android:id="@+id/textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="188dp"
+                android:layout_marginTop="196dp"
                 android:fontFamily="@font/afacad_bold"
                 android:text="Esqueci minha senha"
                 android:textColor="@color/app_theme"
                 android:textSize="19dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.856"
+                app:layout_constraintHorizontal_bias="0.863"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:ignore="TextSizeCheck" />
@@ -102,14 +103,14 @@
                 android:layout_width="338dp"
                 android:layout_height="61dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="52dp"
+                android:layout_marginTop="68dp"
                 android:layout_marginEnd="16dp"
                 android:width="200dp"
-                android:backgroundTint="#02b49a"
                 android:text="Entrar"
                 android:textSize="26dp"
                 app:cornerRadius="4sp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.536"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/edtSenha" />
 
@@ -117,13 +118,13 @@
                 android:id="@+id/textViewCadastro"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="36dp"
+                android:layout_marginTop="48dp"
                 android:fontFamily="@font/afacad_bold"
                 android:text="Não tem conta? Cadastre-se como:"
                 android:textColor="@color/app_theme"
                 android:textSize="22dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.494"
+                app:layout_constraintHorizontal_bias="0.495"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/btn_login" />
 
@@ -138,7 +139,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewCadastro">
+                app:layout_constraintTop_toBottomOf="@+id/textViewCadastro"
+                app:layout_constraintVertical_bias="0.948">
 
                 <ImageButton
                     android:id="@+id/btnCadastroCliente"
@@ -212,7 +214,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_begin="327dp" />
+                app:layout_constraintGuide_begin="336dp" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
