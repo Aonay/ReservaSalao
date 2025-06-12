@@ -139,7 +139,10 @@ class ClienteHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
 
         override fun onNavigationItemSelected(item: MenuItem): Boolean {
             when (item.itemId) {
-                R.id.menu_agendamentos -> {
+                R.id.menu_home_salao -> {
+                    startActivity(Intent(this, ClienteHomeActivity::class.java))
+                }
+                R.id.menu_agendamentos_salao -> {
                     startActivity(Intent(this, AgendamentosClienteActivity::class.java))
                 }
                 R.id.menu_sair -> {

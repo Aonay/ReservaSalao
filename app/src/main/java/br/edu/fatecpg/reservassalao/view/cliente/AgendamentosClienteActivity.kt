@@ -1,15 +1,20 @@
 package br.edu.fatecpg.reservassalao.view.cliente
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.drawerlayout.widget.DrawerLayout
+import androidx.core.view.GravityCompat
+import br.edu.fatecpg.reservassalao.R
 import br.edu.fatecpg.reservassalao.databinding.ActivityAgendamentosClienteBinding
+import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
-class AgendamentosClienteActivity : AppCompatActivity() {
+class AgendamentosClienteActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private val binding by lazy {
         ActivityAgendamentosClienteBinding.inflate(layoutInflater)
     }
@@ -23,16 +28,28 @@ class AgendamentosClienteActivity : AppCompatActivity() {
 
         auth = Firebase.auth
 
-        // Abertura do menu lateral
         binding.btnMenu.setOnClickListener {
-            binding.drawerLayout.openDrawer(binding.navigationView)
+            binding.drawerLayout.openDrawer(GravityCompat.START)
         }
 
-        // Você pode adicionar comportamento de clique nos itens do menu aqui se quiser
-        binding.navigationView.setNavigationItemSelectedListener { menuItem ->
-            // Ex: if (menuItem.itemId == R.id.menu_sair) { ... }
-            binding.drawerLayout.closeDrawers()
-            true
+        binding.navigationView.setNavigationItemSelectedListener(this)
+    }
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.menu_home_salao -> {
+                startActivity(Intent(this, ClienteHomeActivity::class.java))
+            }
+            R.id.menu_agendamentos_salao -> {
+                startActivity(Intent(this, AgendamentosClienteActivity::class.java))
+            }
+            R.id.menu_sair -> {
+                auth.signOut()
+                Toast.makeText(this, "Sessão encerrada", Toast.LENGTH_SHORT).show()
+                finish()
+            }
         }
+        binding.drawerLayout.closeDrawer(GravityCompat.START)
+        return true
     }
 }

@@ -1,15 +1,19 @@
 package br.edu.fatecpg.reservassalao.view.auth
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.ViewModelProvider
+import br.edu.fatecpg.reservassalao.MainActivity
+import br.edu.fatecpg.reservassalao.R
 import br.edu.fatecpg.reservassalao.databinding.ActivityCadastroSalaoBinding
 import br.edu.fatecpg.reservassalao.viewmodel.CadastroSalaoViewModel
 import coil.load
 import coil.request.CachePolicy
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class CadastroSalaoActivity : AppCompatActivity() {
     private val binding by lazy {
@@ -24,6 +28,12 @@ class CadastroSalaoActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         viewModel = ViewModelProvider(this)[CadastroSalaoViewModel::class.java]
+        val fabSair = findViewById<FloatingActionButton>(R.id.fab_sair)
+        fabSair.setOnClickListener {
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
 
         binding.edtImagemUrl.addTextChangedListener {
             val url = it.toString()

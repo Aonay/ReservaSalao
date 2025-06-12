@@ -12,12 +12,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
+            android:layout_height="139dp"
             android:background="@color/app_theme"
             android:elevation="4dp"
-            android:layout_height="134dp"
             android:minHeight="?attr/actionBarSize"
             app:contentInsetStart="0dp">
 
@@ -25,16 +26,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/app_theme"
+                android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                android:gravity="center_vertical">
+                android:paddingEnd="16dp">
 
                 <ImageView
                     android:id="@+id/logoImage"
                     android:layout_width="143dp"
                     android:layout_height="85dp"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginBottom="1dp"
                     android:contentDescription="Logo"
                     android:src="@drawable/aura" />
 

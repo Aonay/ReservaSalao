@@ -1,7 +1,9 @@
 package br.edu.fatecpg.reservassalao.view.cliente
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -9,25 +11,31 @@ import androidx.core.view.GravityCompat
 import br.edu.fatecpg.reservassalao.R
 import br.edu.fatecpg.reservassalao.databinding.ActivityAgendarBinding
 import br.edu.fatecpg.reservassalao.model.Salao
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 import com.bumptech.glide.Glide
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.navigation.NavigationView
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import java.io.Serializable
 
-class AgendarActivity : AppCompatActivity() {
+class AgendarActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private lateinit var binding: ActivityAgendarBinding
     private val db = Firebase.firestore
+    private val auth = Firebase.auth // ✅ Instanciando o Firebase Auth
     private lateinit var salao: Salao
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAgendarBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        binding.navigationView.setNavigationItemSelectedListener(this)
 
         salao = intent.getSerializableExtra("salao") as Salao
         binding.txtNomeSalao.text = salao.nome
@@ -36,13 +44,14 @@ class AgendarActivity : AppCompatActivity() {
         setupBotaoAgendar()
 
         Glide.with(this)
-            .load(salao.imagemUrl) // Supondo que `imagemUrl` é um campo em Salao
+            .load(salao.imagemUrl)
             .placeholder(R.drawable.ic_launcher_background)
             .into(binding.imgSalaoItem)
 
         binding.btnMenu.setOnClickListener {
             binding.drawerLayout.openDrawer(GravityCompat.START)
         }
+
         binding.edtData.setOnClickListener {
             val datePicker = MaterialDatePicker.Builder.datePicker()
                 .setTitleText("Selecione a data")
@@ -70,7 +79,6 @@ class AgendarActivity : AppCompatActivity() {
                 binding.edtHorario.setText("$hour:$minute")
             }
         }
-
     }
 
     private fun carregarServicos() {
@@ -119,5 +127,23 @@ class AgendarActivity : AppCompatActivity() {
                     Toast.makeText(this, "Erro ao agendar", Toast.LENGTH_SHORT).show()
                 }
         }
+    }
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.menu_home_salao -> {
+                startActivity(Intent(this, ClienteHomeActivity::class.java))
+            }
+            R.id.menu_agendamentos_salao -> {
+                startActivity(Intent(this, AgendamentosClienteActivity::class.java))
+            }
+            R.id.menu_sair -> {
+                auth.signOut()
+                Toast.makeText(this, "Sessão encerrada", Toast.LENGTH_SHORT).show()
+                finish()
+            }
+        }
+        binding.drawerLayout.closeDrawer(GravityCompat.START)
+        return true
     }
 }

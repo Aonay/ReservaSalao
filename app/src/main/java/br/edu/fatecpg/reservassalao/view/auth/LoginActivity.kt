@@ -6,9 +6,12 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import br.edu.fatecpg.reservassalao.MainActivity
+import br.edu.fatecpg.reservassalao.R
 import br.edu.fatecpg.reservassalao.databinding.ActivityLoginBinding
 import br.edu.fatecpg.reservassalao.view.cliente.ClienteHomeActivity
 import br.edu.fatecpg.reservassalao.view.salao.SalaoHomeActivity
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
@@ -29,6 +32,13 @@ class LoginActivity : AppCompatActivity() {
         auth = Firebase.auth
 
         setupLoginButton()
+        val fabSair = findViewById<FloatingActionButton>(R.id.fab_sair)
+
+        fabSair.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
 
         binding.btnCadastroCliente.setOnClickListener {
             startActivity(Intent(this, CadastroClienteActivity::class.java))

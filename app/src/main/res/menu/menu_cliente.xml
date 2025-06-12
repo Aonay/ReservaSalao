@@ -1,6 +1,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/menu_agendamentos"
+        android:id="@+id/menu_home_salao"
+        android:title="Home"
+        android:icon="@drawable/ic_home" />
+    <item
+        android:id="@+id/menu_agendamentos_salao"
         android:title="Meus Agendamentos"
         android:icon="@drawable/ic_calendar" />
     <item

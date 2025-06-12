@@ -8,13 +8,6 @@
     android:background="@color/app_theme"
     tools:context=".view.auth.LoginActivity">
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="178dp" />
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_sair"
         android:layout_width="wrap_content"
@@ -32,40 +25,23 @@
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardView"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_width="416dp"
+        android:layout_height="564dp"
         android:background="@color/app_theme"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline"
-        app:layout_constraintVertical_bias="1.0">
+        app:layout_constraintStart_toStartOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="196dp"
-                android:fontFamily="@font/afacad_bold"
-                android:text="Esqueci minha senha"
-                android:textColor="@color/app_theme"
-                android:textSize="19dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.863"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:ignore="TextSizeCheck" />
+            android:layout_height="555dp">
 
             <EditText
                 android:id="@+id/edtEmail"
                 android:layout_width="336dp"
                 android:layout_height="51dp"
-                android:layout_marginTop="64dp"
+                android:layout_marginTop="88dp"
                 android:layout_marginEnd="24dp"
                 android:background="@drawable/edit_text_background"
                 android:drawableStart="@drawable/e_mail"
@@ -76,7 +52,7 @@
                 android:minHeight="48dp"
                 android:padding="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.745"
+                app:layout_constraintHorizontal_bias="0.76"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -84,7 +60,7 @@
                 android:id="@+id/edtSenha"
                 android:layout_width="337dp"
                 android:layout_height="53dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="16dp"
                 android:background="@drawable/edit_text_background"
                 android:drawableStart="@drawable/cadeado"
                 android:drawablePadding="8dp"
@@ -103,14 +79,14 @@
                 android:layout_width="338dp"
                 android:layout_height="61dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="68dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:width="200dp"
                 android:text="Entrar"
                 android:textSize="26dp"
                 app:cornerRadius="4sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.536"
+                app:layout_constraintHorizontal_bias="0.487"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/edtSenha" />
 
@@ -118,13 +94,13 @@
                 android:id="@+id/textViewCadastro"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="48dp"
+                android:layout_marginTop="40dp"
                 android:fontFamily="@font/afacad_bold"
+                android:paddingBottom="9dp"
                 android:text="Não tem conta? Cadastre-se como:"
                 android:textColor="@color/app_theme"
                 android:textSize="22dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.495"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/btn_login" />
 
@@ -132,15 +108,13 @@
                 android:id="@+id/layoutBotoesCadastro"
                 android:layout_width="297dp"
                 android:layout_height="103dp"
-                android:layout_marginTop="59dp"
-                android:layout_marginBottom="36dp"
+                android:layout_marginTop="32dp"
                 android:gravity="center"
                 android:orientation="horizontal"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.436"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewCadastro"
-                app:layout_constraintVertical_bias="0.948">
+                app:layout_constraintTop_toBottomOf="@+id/textViewCadastro">
 
                 <ImageButton
                     android:id="@+id/btnCadastroCliente"
@@ -162,39 +136,6 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/textView8"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="100dp"
-                android:layout_marginTop="27dp"
-                android:layout_marginEnd="79dp"
-                android:layout_marginBottom="144dp"
-                android:layout_weight="1"
-                android:fontFamily="@font/afacad_bold"
-                android:text="CLIENTE"
-                android:textSize="20dp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/textView9"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewCadastro" />
-
-            <TextView
-                android:id="@+id/textView9"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="27dp"
-                android:layout_marginEnd="112dp"
-                android:layout_marginBottom="144dp"
-                android:fontFamily="@font/afacad_bold"
-                android:text="SALÃO"
-                android:textSize="20dp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewCadastro" />
-
-            <TextView
                 android:id="@+id/textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -209,12 +150,35 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline2"
+            <TextView
+                android:id="@+id/textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintGuide_begin="336dp" />
+                android:layout_marginTop="9dp"
+                android:layout_marginBottom="4dp"
+                android:fontFamily="@font/afacad_bold"
+                android:text="CLIENTE"
+                android:textSize="20dp"
+                app:layout_constraintBottom_toTopOf="@+id/layoutBotoesCadastro"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.293"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewCadastro" />
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="232dp"
+                android:layout_marginTop="9dp"
+                android:layout_marginBottom="4dp"
+                android:fontFamily="@font/afacad_bold"
+                android:text="SALÃO"
+                android:textSize="20dp"
+                app:layout_constraintBottom_toTopOf="@+id/layoutBotoesCadastro"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewCadastro"
+                app:layout_constraintVertical_bias="0.625" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -222,13 +186,15 @@
 
     <ImageView
         android:id="@+id/imageView5"
-        android:layout_width="189dp"
+        android:layout_width="174dp"
         android:layout_height="122dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="17dp"
         app:layout_constraintBottom_toTopOf="@+id/cardView"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.42"
         app:srcCompat="@drawable/aura" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
