@@ -37,6 +37,8 @@ class ClienteHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         binding = ActivityClienteHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.navigationView.setNavigationItemSelectedListener(this)
+
         auth = Firebase.auth
 
         if (auth.currentUser == null) {
@@ -73,19 +75,21 @@ class ClienteHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         }
 
         // Buscar salões
-        binding.edtBuscarSalao.setOnEditorActionListener { _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                val termo = binding.edtBuscarSalao.text.toString().trim()
-                if (termo.isNotEmpty()) {
-                    buscarSaloes(termo)
-                } else {
+        binding.edtBuscarSalao.addTextChangedListener(object : android.text.TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val termo = s.toString().trim()
+                if (termo.isEmpty()) {
                     carregarSaloes()
+                } else {
+                    buscarSaloes(termo)
                 }
-                true
-            } else {
-                false
             }
-        }
+
+            override fun afterTextChanged(s: android.text.Editable?) {}
+        })
+
     }
 
     private fun carregarNomeCliente() {
