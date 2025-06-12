@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
-import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -53,8 +52,6 @@ class ClienteHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
             Toast.makeText(this, "Menu clicado", Toast.LENGTH_SHORT).show()
             binding.drawerLayout.openDrawer(GravityCompat.START)
         }
-
-        // RecyclerView
         adapter = SalaoAdapter(saloesList) { salao ->
             val intent = Intent(this, AgendarActivity::class.java)
             intent.putExtra("salao", salao)
@@ -69,52 +66,51 @@ class ClienteHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         carregarSaloes()
 
 
-        // Buscar salões
-        binding.edtBuscarSalao.setOnEditorActionListener { _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                val termo = binding.edtBuscarSalao.text.toString().trim()
-                if (termo.isNotEmpty()) {
-                    buscarSaloes(termo)
-                } else {
-                    carregarSaloes()
-                }
-                true
-            } else {
-                false
+        binding.edtBuscarSalao.addTextChangedListener(object : android.text.TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
-        }
-    }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val termo = s.toString().trim()
+                if (termo.isEmpty()) {
+                    carregarSaloes()
+                } else {
+                    buscarSaloes(termo)
+                }
+            }
+            override fun afterTextChanged(s: android.text.Editable?) {
 
+            }
+        })
+    }
     private fun carregarNomeCliente() {
         val idCliente = auth.currentUser?.uid ?: return
 
         db.collection("clientes").document(idCliente)
             .get()
-            .addOnSuccessListener {
-                val nome = it.getString("nome") ?: "Cliente"
+            .addOnSuccessListener { documentSnapshot ->
+                val nome = documentSnapshot.getString("nome") ?: "Cliente"
                 binding.txtOlaCliente.text = "Olá, $nome!"
-
-                // Também exibe no cabeçalho do menu lateral, se quiser
                 val headerView = binding.navigationView.getHeaderView(0)
                 val txtNomeHeader = headerView.findViewById<android.widget.TextView>(R.id.txtNomeHeader)
                 txtNomeHeader.text = nome
             }
-            .addOnFailureListener {
+            .addOnFailureListener { e ->
+                Log.e("ClienteHomeActivity", "Erro ao carregar nome do cliente: ${e.message}", e)
                 Toast.makeText(this, "Erro ao carregar nome do cliente", Toast.LENGTH_SHORT).show()
             }
     }
-
     private fun carregarSaloes() {
         db.collection("saloes").get()
             .addOnSuccessListener { result ->
                 saloesList.clear()
                 for (document in result) {
                     val salao = document.toObject(Salao::class.java).copy(id = document.id)
-                    saloesList.add(salao)
+                    saloesList.add(salao) // Add to the list
                 }
                 adapter.notifyDataSetChanged()
             }
-            .addOnFailureListener {
+            .addOnFailureListener { e ->
+                Log.e("ClienteHomeActivity", "Erro ao carregar salões: ${e.message}", e)
                 Toast.makeText(this, "Erro ao carregar salões", Toast.LENGTH_SHORT).show()
             }
     }
@@ -136,25 +132,28 @@ class ClienteHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
                 }
                 adapter.notifyDataSetChanged()
             }
-            .addOnFailureListener {
-                Log.e("DEBUG_BUSCA", "Erro na busca: ${it.message}")
+            .addOnFailureListener { e ->
+                Log.e("DEBUG_BUSCA", "Erro na busca: ${e.message}", e)
                 Toast.makeText(this, "Erro na busca", Toast.LENGTH_SHORT).show()
             }
     }
 
-        override fun onNavigationItemSelected(item: MenuItem): Boolean {
-            when (item.itemId) {
-                R.id.menu_agendamentos -> {
-                    startActivity(Intent(this, AgendamentosClienteActivity::class.java))
-                }
-                R.id.menu_sair -> {
-                    auth.signOut()
-                    Toast.makeText(this, "Sessão encerrada", Toast.LENGTH_SHORT).show()
-                    finish()
-                }
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.menu_agendamentos -> {
+                startActivity(Intent(this, AgendamentosClienteActivity::class.java))
             }
-            binding.drawerLayout.closeDrawer(GravityCompat.START)
-            return true
-        }
+            R.id.menu_sair -> {
+                auth.signOut()
+                Toast.makeText(this, "Sessão encerrada", Toast.LENGTH_SHORT).show()
 
+                val intent = Intent(this, LoginActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(intent)
+                finish()
+            }
+        }
+        binding.drawerLayout.closeDrawer(GravityCompat.START)
+        return true
+    }
 }

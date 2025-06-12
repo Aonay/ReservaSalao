@@ -29,6 +29,7 @@ class SalaoHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
     private lateinit var drawerLayout: DrawerLayout
     private val auth: FirebaseAuth by lazy { Firebase.auth }
     private val db = Firebase.firestore
+    private lateinit var txtNomeHeader: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,9 +40,8 @@ class SalaoHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         val navigationView: NavigationView = findViewById(R.id.navigationView)
         navigationView.setNavigationItemSelectedListener(this)
 
-        // Atualizar o nome do cabeçalho
         val headerView = navigationView.getHeaderView(0)
-        val txtNomeHeader = headerView.findViewById<TextView>(R.id.txtNomeHeader)
+        txtNomeHeader = headerView.findViewById(R.id.txtNomeHeader)
 
         val userId = auth.currentUser?.uid
 
@@ -51,15 +51,8 @@ class SalaoHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
                     val salao = doc.toObject(Salao::class.java)
 
                     if (salao != null) {
-                        binding.tvNomeSalao.text = salao.nome
-                        binding.tvHorarioFuncionamento.text =
-                            "Horário: ${salao.horarioFuncionamento ?: "Não informado"}"
 
-                        if (!salao.imagemUrl.isNullOrEmpty()) {
-                            binding.imgSalao.load(salao.imagemUrl)
-                        }
-
-                        carregarServicos(userId)
+                        carregarNome(salao)
                         carregarAgendamentos(userId)
                     }
                 }
@@ -75,8 +68,28 @@ class SalaoHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         binding.btnVerTodosAgendamentos.setOnClickListener {
             startActivity(Intent(this, HistoricoSalaoActivity::class.java)) // ou outra tela com todos agendamentos
         }
-
     }
+
+    override fun onResume() {
+        super.onResume()
+        val userId = auth.currentUser?.uid
+        if (userId != null) {
+            carregarServicos(userId)   }
+    }
+
+    private fun carregarNome(salao: Salao) {
+        binding.tvNomeSalao.text = salao.nome
+        binding.tvHorarioFuncionamento.text =
+            "Horário: ${salao.horarioFuncionamento ?: "Não informado"}"
+
+        txtNomeHeader.text = salao.nome
+
+
+        if (!salao.imagemUrl.isNullOrEmpty()) {
+            binding.imgSalao.load(salao.imagemUrl)
+        }
+    }
+
 
     private fun carregarServicos(idSalao: String) {
         db.collection("servicos")
@@ -136,7 +149,7 @@ class SalaoHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.menu_home -> startActivity(Intent(this, SalaoHomeActivity::class.java))
+            R.id.menu_home -> {  }
             R.id.menu_servicos -> startActivity(Intent(this, ServicoSalaoActivity::class.java))
             R.id.menu_editar_perfil -> startActivity(Intent(this, EditarPerfilSalaoActivity::class.java))
             R.id.menu_historico -> startActivity(Intent(this, HistoricoSalaoActivity::class.java))
@@ -154,5 +167,4 @@ class SalaoHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         binding.drawerLayout.closeDrawer(GravityCompat.START)
         return true
     }
-
 }

@@ -2,6 +2,7 @@ package br.edu.fatecpg.reservassalao.view.salao
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -19,6 +20,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
+
 class HistoricoSalaoActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var toggle: ActionBarDrawerToggle
@@ -30,15 +32,10 @@ class HistoricoSalaoActivity : AppCompatActivity(), NavigationView.OnNavigationI
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        // Configurar botão menu para abrir drawer navigation
         binding.btnMenu.setOnClickListener {
             binding.drawerLayout.openDrawer(GravityCompat.START)
         }
-
-        // Configurar listener para itens do navigation drawer
         binding.navigationView.setNavigationItemSelectedListener(this)
-
-        // Configurar RecyclerView
         binding.recyclerAgendamentos.layoutManager = LinearLayoutManager(this)
 
         val userId = auth.currentUser?.uid ?: return

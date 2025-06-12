@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import br.edu.fatecpg.reservassalao.R
 import br.edu.fatecpg.reservassalao.databinding.ActivityAgendarBinding
+import br.edu.fatecpg.reservassalao.model.Agendamento
 import br.edu.fatecpg.reservassalao.model.Salao
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -15,8 +16,8 @@ import com.bumptech.glide.Glide
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.FieldValue
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -54,11 +55,10 @@ class AgendarActivity : AppCompatActivity() {
             datePicker.show(supportFragmentManager, "DATE_PICKER")
 
             datePicker.addOnPositiveButtonClickListener { selection ->
-                val calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC")) // começa com UTC
+                val calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
                 calendar.timeInMillis = selection
 
-                // Agora ajusta para o fuso local (ex: GMT-3)
-                val localCalendar = Calendar.getInstance() // fuso local
+                val localCalendar = Calendar.getInstance()
                 localCalendar.set(
                     calendar.get(Calendar.YEAR),
                     calendar.get(Calendar.MONTH),
@@ -100,7 +100,8 @@ class AgendarActivity : AppCompatActivity() {
                     Log.d("AgendarActivity", "Nenhum serviço encontrado para o salão ${salao.id}")
                 }
                 val nomesServicos = result.map { it.getString("nome") ?: "Serviço" }
-                val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, nomesServicos)
+                val adapter =
+                    ArrayAdapter(this, android.R.layout.simple_spinner_item, nomesServicos)
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                 binding.spinnerServicos.adapter = adapter
             }
@@ -110,17 +111,16 @@ class AgendarActivity : AppCompatActivity() {
     }
 
     private fun setupBotaoAgendar() {
-      val userId = Firebase.auth.currentUser?.uid
-
         binding.btnAgendar.setOnClickListener {
-            val servico = binding.spinnerServicos.selectedItem?.toString()
-            val data = binding.edtData.text.toString()
-            val horario = binding.edtHorario.text.toString()
+            val nomeServico = binding.spinnerServicos.selectedItem?.toString()
+            val dataTexto = binding.edtData.text.toString()
+            val horarioTexto = binding.edtHorario.text.toString()
 
-            if (servico.isNullOrEmpty() || data.isEmpty() || horario.isEmpty()) {
+            if (nomeServico.isNullOrEmpty() || dataTexto.isEmpty() || horarioTexto.isEmpty()) {
                 Toast.makeText(this, "Preencha todos os campos", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
+
             val delimitador = if (salao.horarioFuncionamento.contains(" às ")) " às "
             else if (salao.horarioFuncionamento.contains(" - ")) " - "
             else null
@@ -132,7 +132,8 @@ class AgendarActivity : AppCompatActivity() {
 
             val partesHorario = salao.horarioFuncionamento.split(delimitador)
             if (partesHorario.size != 2) {
-                Toast.makeText(this, "Horário de funcionamento mal formatado", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Horário de funcionamento mal formatado", Toast.LENGTH_SHORT)
+                    .show()
                 return@setOnClickListener
             }
 
@@ -141,7 +142,7 @@ class AgendarActivity : AppCompatActivity() {
             val formatoHora = SimpleDateFormat("HH:mm", Locale.getDefault())
 
             try {
-                val horaSelecionada = formatoHora.parse(horario)
+                val horaSelecionada = formatoHora.parse(horarioTexto)
                 val horaAbertura = formatoHora.parse(horaAberturaStr)
                 val horaFechamento = formatoHora.parse(horaFechamentoStr)
 
@@ -158,70 +159,95 @@ class AgendarActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            val agendamento = hashMapOf(
-                "salaoId" to salao.id,
-                "userId" to userId,
-                "servico" to servico,
-                "data" to data,
-                "horario" to horario,
-                "status" to "pendente"
-            )
 
-            val userId = Firebase.auth.currentUser?.uid
-            if (userId == null) {
-                Toast.makeText(this, "Usuário não autenticado", Toast.LENGTH_SHORT).show()
+            val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+            val dataConvertida: Date = try {
+                sdf.parse(dataTexto) ?: Date()
+            } catch (e: Exception) {
+                Toast.makeText(this, "Data inválida", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            // Verifica se já existe um agendamento para o mesmo salão, data, horário e serviço
-            db.collection("agendamentos")
-                .whereEqualTo("salaoId", salao.id)
-                .whereEqualTo("userId", userId)
-                .whereEqualTo("data", data)
-                .whereEqualTo("horario", horario)
-                .whereEqualTo("servico", servico)
-                .whereEqualTo("status", "pendente")
-                .get()
-                .addOnSuccessListener { documents ->
-                    if (!documents.isEmpty) {
-                        Toast.makeText(this, "Esse horário já está ocupado para o serviço escolhido.", Toast.LENGTH_LONG).show()
-                    } else {
-                        // Prossegue com o agendamento se estiver livre
-            db.collection("agendamentos")
-                .add(agendamento)
-                .addOnSuccessListener { agendamentoRef ->
-                 val agendamentoId = agendamentoRef.id
-
-            db.collection("clientes").document(userId)
-                 .update("agendamentos", FieldValue.arrayUnion(agendamentoId))
-                 .addOnSuccessListener {
-
-            db.collection("saloes").document(salao.id)
-                 .collection("agendamentos").document(agendamentoId)
-                 .set(agendamento)
-                 .addOnSuccessListener {
-                        Toast.makeText(this, "Agendado com sucesso!", Toast.LENGTH_SHORT).show()
-                  finish()
-                   }
-
-                  .addOnFailureListener {
-                        Toast.makeText(this, "Erro ao salvar no salão", Toast.LENGTH_SHORT).show()
-                   }
-               }
-                  .addOnFailureListener {
-                        Toast.makeText(this, "Erro ao salvar no cliente", Toast.LENGTH_SHORT).show()
-                   }
-               }
-                  .addOnFailureListener {
-                        Toast.makeText(this, "Erro ao agendar", Toast.LENGTH_SHORT).show()
-                   }
+            val idCliente = FirebaseAuth.getInstance().currentUser?.uid
+            if (idCliente == null) {
+                Toast.makeText(this, "Erro ao obter usuário", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
             }
-        }
-                .addOnFailureListener {
-                        Toast.makeText(this, "Erro ao verificar disponibilidade", Toast.LENGTH_SHORT).show()
+
+                    db.collection("saloes").document(salao.id)
+                        .collection("servicos")
+                        .whereEqualTo("nome", nomeServico)
+                        .get()
+                        .addOnSuccessListener { result ->
+                            val idServico = result.documents.firstOrNull()?.id
+                            if (idServico == null) {
+                                Toast.makeText(
+                                    this,
+                                    "Erro ao localizar serviço",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                return@addOnSuccessListener
+                            }
+
+                            // Verificar conflito com idSalao, data, hora e idServico
+                            db.collection("agendamentos")
+                                .whereEqualTo("idSalao", salao.id)
+                                .whereEqualTo("data", dataConvertida)
+                                .whereEqualTo("hora", horarioTexto)
+                                .whereEqualTo("idServico", idServico)
+                                .get()
+                                .addOnSuccessListener { agendamentos ->
+                                    if (!agendamentos.isEmpty) {
+                                        Toast.makeText(
+                                            this,
+                                            "Já existe um agendamento com esse serviço nesse salão, data e hora.",
+                                            Toast.LENGTH_LONG
+                                        ).show()
+                                        return@addOnSuccessListener
+                                    }
+
+
+                                    val agendamento = Agendamento(
+                                        idServico = idServico,
+                                        idSalao = salao.id,
+                                        idCliente = idCliente,
+                                        data = dataConvertida,
+                                        hora = horarioTexto,
+                                        status = "pendente"
+                                    )
+
+                                    db.collection("agendamentos")
+                                        .add(agendamento)
+                                        .addOnSuccessListener {
+                                            Toast.makeText(
+                                                this,
+                                                "Agendado com sucesso!",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                            finish()
+                                        }
+                                        .addOnFailureListener {
+                                            Toast.makeText(
+                                                this,
+                                                "Erro ao agendar",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                        }
+                                }
+                                .addOnFailureListener {
+                                    Toast.makeText(
+                                        this,
+                                        "Erro ao buscar serviço",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+
+                        }
+                        .addOnFailureListener {
+                            Toast.makeText(this, "Erro ao verificar conflitos", Toast.LENGTH_SHORT)
+                                .show()
+                        }
                 }
-
         }
-    }
 
-}
+    }
