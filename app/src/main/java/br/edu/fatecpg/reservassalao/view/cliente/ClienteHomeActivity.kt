@@ -142,6 +142,7 @@ class ClienteHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
                 Toast.makeText(this, "Erro na busca", Toast.LENGTH_SHORT).show()
             }
     }
+
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_home_salao -> {

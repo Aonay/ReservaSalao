@@ -37,6 +37,7 @@ class AgendarActivity : AppCompatActivity(), NavigationView.OnNavigationItemSele
         super.onCreate(savedInstanceState)
         binding = ActivityAgendarBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        carregarNomeCliente()
 
         binding.navigationView.setNavigationItemSelectedListener(this)
 
@@ -95,6 +96,23 @@ class AgendarActivity : AppCompatActivity(), NavigationView.OnNavigationItemSele
                 binding.edtHorario.setText("$hour:$minute")
             }
         }
+    }
+    private fun carregarNomeCliente() {
+        val idCliente = auth.currentUser?.uid ?: return
+
+        db.collection("clientes").document(idCliente)
+            .get()
+            .addOnSuccessListener { documentSnapshot ->
+                val nome = documentSnapshot.getString("nome") ?: "Cliente"
+
+                val headerView = binding.navigationView.getHeaderView(0)
+                val txtNomeHeader = headerView.findViewById<android.widget.TextView>(R.id.txtNomeHeader)
+                txtNomeHeader.text = nome
+            }
+            .addOnFailureListener { e ->
+                Log.e("ClienteHomeActivity", "Erro ao carregar nome do cliente: ${e.message}", e)
+                Toast.makeText(this, "Erro ao carregar nome do cliente", Toast.LENGTH_SHORT).show()
+            }
     }
 
     private fun carregarServicos() {

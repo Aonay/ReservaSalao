@@ -2,6 +2,7 @@ package br.edu.fatecpg.reservassalao.view.cliente
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -33,6 +34,7 @@ class AgendamentosClienteActivity : AppCompatActivity(), NavigationView.OnNaviga
 
         setupMenu()
         carregarAgendamentos()
+        carregarNomeCliente()
     }
 
     private fun setupMenu() {
@@ -61,6 +63,23 @@ class AgendamentosClienteActivity : AppCompatActivity(), NavigationView.OnNaviga
         return true
     }
 
+    private fun carregarNomeCliente() {
+        val idCliente = auth.currentUser?.uid ?: return
+
+        db.collection("clientes").document(idCliente)
+            .get()
+            .addOnSuccessListener { documentSnapshot ->
+                val nome = documentSnapshot.getString("nome") ?: "Cliente"
+
+                val headerView = binding.navigationView.getHeaderView(0)
+                val txtNomeHeader = headerView.findViewById<android.widget.TextView>(R.id.txtNomeHeader)
+                txtNomeHeader.text = nome
+            }
+            .addOnFailureListener { e ->
+                Log.e("ClienteHomeActivity", "Erro ao carregar nome do cliente: ${e.message}", e)
+                Toast.makeText(this, "Erro ao carregar nome do cliente", Toast.LENGTH_SHORT).show()
+            }
+    }
 
     private fun carregarAgendamentos() {
         val idCliente = auth.currentUser?.uid ?: return

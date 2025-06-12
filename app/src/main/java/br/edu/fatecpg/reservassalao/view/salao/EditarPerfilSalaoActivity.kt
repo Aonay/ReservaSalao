@@ -3,6 +3,7 @@ package br.edu.fatecpg.reservassalao.view.salao
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
@@ -28,6 +29,7 @@ class EditarPerfilSalaoActivity : AppCompatActivity(), NavigationView.OnNavigati
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        carregarNomeSalaoNoHeader()
 
         binding.btnMenu.setOnClickListener {
             binding.drawerLayout.openDrawer(GravityCompat.START)
@@ -123,6 +125,21 @@ class EditarPerfilSalaoActivity : AppCompatActivity(), NavigationView.OnNavigati
                     binding.btnSalvar.isEnabled = true
                 }
         }
+    }
+
+    private fun carregarNomeSalaoNoHeader() {
+        val idSalao = auth.currentUser?.uid ?: return
+        val headerView = binding.navigationView.getHeaderView(0)
+        val txtNomeHeader = headerView.findViewById<TextView>(R.id.txtNomeHeader)
+
+        db.collection("saloes").document(idSalao).get()
+            .addOnSuccessListener { document ->
+                val nomeSalao = document.getString("nome") ?: "Nome do Salão"
+                txtNomeHeader.text = nomeSalao
+            }
+            .addOnFailureListener {
+                txtNomeHeader.text = "Erro ao carregar"
+            }
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {

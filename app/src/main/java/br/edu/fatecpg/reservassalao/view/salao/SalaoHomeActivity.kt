@@ -110,9 +110,7 @@ class SalaoHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
                     binding.layoutServicos.addView(tv)
                 }
             }
-            .addOnFailureListener {
-                Toast.makeText(this, "Erro ao carregar serviços: ${it.message}", Toast.LENGTH_SHORT).show()
-            }
+
     }
 
     private fun carregarAgendamentos(idSalao: String) {
@@ -141,9 +139,6 @@ class SalaoHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
                             }
                     }
                 }
-            }
-            .addOnFailureListener {
-                Toast.makeText(this, "Erro ao carregar agendamentos: ${it.message}", Toast.LENGTH_SHORT).show()
             }
     }
 
