@@ -53,7 +53,6 @@ class SalaoHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
                     if (salao != null) {
 
                         carregarNome(salao)
-                        carregarAgendamentos(userId)
                     }
                 }
                 .addOnFailureListener {
@@ -111,35 +110,6 @@ class SalaoHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
                 }
             }
 
-    }
-
-    private fun carregarAgendamentos(idSalao: String) {
-        db.collection("agendamentos")
-            .whereEqualTo("Salaoid", idSalao)
-            .orderBy("data", com.google.firebase.firestore.Query.Direction.DESCENDING)
-            .limit(3)
-            .get()
-            .addOnSuccessListener { snapshot ->
-                binding.layoutAgendamentos.removeAllViews()
-
-                for (doc in snapshot.documents) {
-                    val nomeServico = doc.getString("nomeServico") ?: "Serviço"
-                    val idCliente = doc.getString("idCliente")
-                    val data = doc.getString("data") ?: "Data"
-                    val hora = doc.getString("hora") ?: "Hora"
-
-                    if (idCliente != null) {
-                        db.collection("clientes").document(idCliente).get()
-                            .addOnSuccessListener { clienteDoc ->
-                                val nomeCliente = clienteDoc.getString("nome") ?: "Cliente"
-
-                                val tv = TextView(this)
-                                tv.text = "• $nomeServico com $nomeCliente em $data às $hora"
-                                binding.layoutAgendamentos.addView(tv)
-                            }
-                    }
-                }
-            }
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
