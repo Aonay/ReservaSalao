@@ -18,8 +18,11 @@ import com.google.android.material.timepicker.TimeFormat
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FieldValue
 import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Date
 import java.util.Locale
+import java.util.TimeZone
+
 class AgendarActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAgendarBinding
     private val db = Firebase.firestore
@@ -51,8 +54,22 @@ class AgendarActivity : AppCompatActivity() {
             datePicker.show(supportFragmentManager, "DATE_PICKER")
 
             datePicker.addOnPositiveButtonClickListener { selection ->
-                val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-                binding.edtData.setText(sdf.format(Date(selection)))
+                val calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC")) // começa com UTC
+                calendar.timeInMillis = selection
+
+                // Agora ajusta para o fuso local (ex: GMT-3)
+                val localCalendar = Calendar.getInstance() // fuso local
+                localCalendar.set(
+                    calendar.get(Calendar.YEAR),
+                    calendar.get(Calendar.MONTH),
+                    calendar.get(Calendar.DAY_OF_MONTH)
+                )
+
+                val formatoData = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                formatoData.timeZone = TimeZone.getDefault()
+
+                val dataFormatada = formatoData.format(localCalendar.time)
+                binding.edtData.setText(dataFormatada)
             }
         }
 
@@ -93,7 +110,8 @@ class AgendarActivity : AppCompatActivity() {
     }
 
     private fun setupBotaoAgendar() {
-        val userId = Firebase.auth.currentUser?.uid
+      val userId = Firebase.auth.currentUser?.uid
+
         binding.btnAgendar.setOnClickListener {
             val servico = binding.spinnerServicos.selectedItem?.toString()
             val data = binding.edtData.text.toString()
@@ -101,6 +119,42 @@ class AgendarActivity : AppCompatActivity() {
 
             if (servico.isNullOrEmpty() || data.isEmpty() || horario.isEmpty()) {
                 Toast.makeText(this, "Preencha todos os campos", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            val delimitador = if (salao.horarioFuncionamento.contains(" às ")) " às "
+            else if (salao.horarioFuncionamento.contains(" - ")) " - "
+            else null
+
+            if (delimitador == null) {
+                Toast.makeText(this, "Horário de funcionamento inválido", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val partesHorario = salao.horarioFuncionamento.split(delimitador)
+            if (partesHorario.size != 2) {
+                Toast.makeText(this, "Horário de funcionamento mal formatado", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val horaAberturaStr = partesHorario[0].trim()
+            val horaFechamentoStr = partesHorario[1].trim()
+            val formatoHora = SimpleDateFormat("HH:mm", Locale.getDefault())
+
+            try {
+                val horaSelecionada = formatoHora.parse(horario)
+                val horaAbertura = formatoHora.parse(horaAberturaStr)
+                val horaFechamento = formatoHora.parse(horaFechamentoStr)
+
+                if (horaSelecionada.before(horaAbertura) || horaSelecionada.after(horaFechamento)) {
+                    Toast.makeText(
+                        this,
+                        "Horário fora do funcionamento do salão ($horaAberturaStr às $horaFechamentoStr)",
+                        Toast.LENGTH_LONG
+                    ).show()
+                    return@setOnClickListener
+                }
+            } catch (e: Exception) {
+                Toast.makeText(this, "Formato de horário inválido", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
