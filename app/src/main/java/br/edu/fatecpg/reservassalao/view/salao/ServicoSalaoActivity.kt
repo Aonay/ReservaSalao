@@ -1,30 +1,45 @@
 package br.edu.fatecpg.reservassalao.view.salao
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
+import br.edu.fatecpg.reservassalao.R
 import br.edu.fatecpg.reservassalao.databinding.ActivityServicoSalaoBinding
 import br.edu.fatecpg.reservassalao.model.CategoriaServico
 import br.edu.fatecpg.reservassalao.model.Servico
+import br.edu.fatecpg.reservassalao.view.auth.LoginActivity
+import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import java.util.*
 
-class ServicoSalaoActivity : AppCompatActivity() {
+class ServicoSalaoActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var binding: ActivityServicoSalaoBinding
     private val db = Firebase.firestore
     private val auth = FirebaseAuth.getInstance()
+    private lateinit var drawerLayout: DrawerLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityServicoSalaoBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        drawerLayout = findViewById(R.id.drawerLayout)
+        binding.navigationView.setNavigationItemSelectedListener(this)
+
         setupCategoriaSpinner()
         setupSalvarButton()
+
+        binding.btnMenu.setOnClickListener {
+            drawerLayout.openDrawer(GravityCompat.START)
+        }
     }
 
     private fun setupCategoriaSpinner() {
@@ -64,10 +79,7 @@ class ServicoSalaoActivity : AppCompatActivity() {
                 idSalao = idSalao
             )
 
-            // Salva na subcoleção do salão
-            val salaoRef =
-                db.collection("saloes").document(idSalao).collection("servicos").document(idServico)
-            // Salva também na coleção global de serviços
+            val salaoRef = db.collection("saloes").document(idSalao).collection("servicos").document(idServico)
             val servicoGlobalRef = db.collection("servicos").document(idServico)
 
             salaoRef.set(servico).continueWithTask {
@@ -76,9 +88,29 @@ class ServicoSalaoActivity : AppCompatActivity() {
                 Toast.makeText(this, "Serviço cadastrado com sucesso!", Toast.LENGTH_SHORT).show()
                 finish()
             }.addOnFailureListener {
-                Toast.makeText(this, "Erro ao salvar serviço: ${it.message}", Toast.LENGTH_SHORT)
-                    .show()
+                Toast.makeText(this, "Erro ao salvar serviço: ${it.message}", Toast.LENGTH_SHORT).show()
             }
         }
+    }
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.menu_home -> startActivity(Intent(this, SalaoHomeActivity::class.java))
+            R.id.menu_servicos -> startActivity(Intent(this, ServicoSalaoActivity::class.java))
+            R.id.menu_editar_perfil -> startActivity(Intent(this, EditarPerfilSalaoActivity::class.java))
+            R.id.menu_historico -> startActivity(Intent(this, HistoricoSalaoActivity::class.java))
+            R.id.menu_sair -> {
+                auth.signOut()
+                Toast.makeText(this, "Sessão encerrada", Toast.LENGTH_SHORT).show()
+
+                val intent = Intent(this, LoginActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(intent)
+
+                finish()
+            }
+        }
+        binding.drawerLayout.closeDrawer(GravityCompat.START)
+        return true
     }
 }

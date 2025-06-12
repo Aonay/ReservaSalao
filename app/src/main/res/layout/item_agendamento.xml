@@ -1,43 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="12dp">
+    android:padding="12dp"
+    android:background="@color/app_theme_light">
+
+    <ImageView
+        android:id="@+id/imgServico"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:scaleType="centerCrop"
+        android:contentDescription="Imagem do serviço"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:src="@drawable/ic_servico" />
 
     <TextView
-        android:id="@+id/txtSalao"
-        android:layout_width="match_parent"
+        android:id="@+id/tvInfo"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Salão"
-        android:textSize="16sp" />
+        android:text="Nome do Serviço"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:maxLines="1"
+        app:layout_constraintStart_toEndOf="@id/imgServico"
+        app:layout_constraintTop_toTopOf="@id/imgServico"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="12dp"/>
 
     <TextView
-        android:id="@+id/txtServico"
-        android:layout_width="match_parent"
+        android:id="@+id/txtDataHora"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Serviço"
-        android:textSize="16sp" />
+        android:layout_marginTop="4dp"
+        android:text="20/10/2025 - 14:00"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@id/tvInfo"
+        app:layout_constraintStart_toStartOf="@id/tvInfo"
+        app:layout_constraintTop_toBottomOf="@id/tvInfo" />
 
-    <TextView
-        android:id="@+id/txtData"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Data"
-        android:textSize="16sp" />
-
-    <TextView
-        android:id="@+id/txtHora"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Hora"
-        android:textSize="16sp" />
-
-    <TextView
-        android:id="@+id/txtStatus"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Status"
-        android:textSize="16sp" />
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
