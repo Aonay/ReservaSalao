@@ -1,19 +1,25 @@
 package br.edu.fatecpg.reservassalao.view.cliente
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
+import br.edu.fatecpg.reservassalao.R
+import br.edu.fatecpg.reservassalao.databinding.ActivityAgendamentosClienteBinding
+import com.google.android.material.navigation.NavigationView
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.edu.fatecpg.reservassalao.adapter.AgendamentoSimplesAdapter
-import br.edu.fatecpg.reservassalao.databinding.ActivityAgendamentosClienteBinding
 import br.edu.fatecpg.reservassalao.model.Agendamento
 import br.edu.fatecpg.reservassalao.model.AgendamentoComSalao
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
-class AgendamentosClienteActivity : AppCompatActivity() {
+class AgendamentosClienteActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private val binding by lazy {
         ActivityAgendamentosClienteBinding.inflate(layoutInflater)
     }
@@ -28,17 +34,51 @@ class AgendamentosClienteActivity : AppCompatActivity() {
 
         setupMenu()
         carregarAgendamentos()
+        carregarNomeCliente()
     }
 
     private fun setupMenu() {
         binding.btnMenu.setOnClickListener {
-            binding.drawerLayout.openDrawer(binding.navigationView)
+            binding.drawerLayout.openDrawer(GravityCompat.START)
+        }
+        binding.navigationView.setNavigationItemSelectedListener(this)
+    }
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.menu_home_salao -> {
+                startActivity(Intent(this, ClienteHomeActivity::class.java))
+            }
+            R.id.menu_agendamentos_salao -> {
+                startActivity(Intent(this, AgendamentosClienteActivity::class.java))
+            }
+            R.id.menu_sair -> {
+                auth.signOut()
+                Toast.makeText(this, "Sessão encerrada", Toast.LENGTH_SHORT).show()
+                finish()
+            }
         }
 
-        binding.navigationView.setNavigationItemSelectedListener { menuItem ->
-            binding.drawerLayout.closeDrawers()
-            true
-        }
+        binding.drawerLayout.closeDrawer(GravityCompat.START)
+        return true
+    }
+
+    private fun carregarNomeCliente() {
+        val idCliente = auth.currentUser?.uid ?: return
+
+        db.collection("clientes").document(idCliente)
+            .get()
+            .addOnSuccessListener { documentSnapshot ->
+                val nome = documentSnapshot.getString("nome") ?: "Cliente"
+
+                val headerView = binding.navigationView.getHeaderView(0)
+                val txtNomeHeader = headerView.findViewById<android.widget.TextView>(R.id.txtNomeHeader)
+                txtNomeHeader.text = nome
+            }
+            .addOnFailureListener { e ->
+                Log.e("ClienteHomeActivity", "Erro ao carregar nome do cliente: ${e.message}", e)
+                Toast.makeText(this, "Erro ao carregar nome do cliente", Toast.LENGTH_SHORT).show()
+            }
     }
 
     private fun carregarAgendamentos() {

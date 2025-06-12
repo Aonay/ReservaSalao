@@ -1,7 +1,6 @@
 package br.edu.fatecpg.reservassalao.model
-
-import com.google.firebase.firestore.FirebaseFirestore
 import java.io.Serializable
+import com.google.firebase.firestore.FirebaseFirestore
 import java.util.Calendar
 import java.util.Date
 
@@ -14,7 +13,6 @@ data class Agendamento(
     val status: String = ""
 ) : Serializable
 
-// Função de simulação (adicione em um lugar adequado do seu projeto, não dentro do data class)
 fun simularAgendamentoPassado() {
     val db = FirebaseFirestore.getInstance()
 
@@ -38,3 +36,4 @@ fun simularAgendamentoPassado() {
             println("❌ Erro ao criar agendamento: ${it.message}")
         }
 }
+

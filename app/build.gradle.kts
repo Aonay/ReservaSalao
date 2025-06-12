@@ -50,7 +50,7 @@ dependencies {
 
     implementation ("de.hdodenhof:circleimageview:3.1.0")
 
-    implementation ("com.google.android.material:material:1.9.0")
+    implementation("com.google.android.material:material:1.12.0-alpha03")
     implementation("com.github.bumptech.glide:glide:4.16.0")
     kapt("com.github.bumptech.glide:compiler:4.16.0")
 

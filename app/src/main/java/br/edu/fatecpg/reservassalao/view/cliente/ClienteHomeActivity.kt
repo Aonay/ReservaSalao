@@ -69,6 +69,7 @@ class ClienteHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         binding.edtBuscarSalao.addTextChangedListener(object : android.text.TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
+
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 val termo = s.toString().trim()
                 if (termo.isEmpty()) {
@@ -77,11 +78,13 @@ class ClienteHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
                     buscarSaloes(termo)
                 }
             }
+
             override fun afterTextChanged(s: android.text.Editable?) {
 
             }
         })
     }
+
     private fun carregarNomeCliente() {
         val idCliente = auth.currentUser?.uid ?: return
 
@@ -91,7 +94,8 @@ class ClienteHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
                 val nome = documentSnapshot.getString("nome") ?: "Cliente"
                 binding.txtOlaCliente.text = "Olá, $nome!"
                 val headerView = binding.navigationView.getHeaderView(0)
-                val txtNomeHeader = headerView.findViewById<android.widget.TextView>(R.id.txtNomeHeader)
+                val txtNomeHeader =
+                    headerView.findViewById<android.widget.TextView>(R.id.txtNomeHeader)
                 txtNomeHeader.text = nome
             }
             .addOnFailureListener { e ->
@@ -99,6 +103,7 @@ class ClienteHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
                 Toast.makeText(this, "Erro ao carregar nome do cliente", Toast.LENGTH_SHORT).show()
             }
     }
+
     private fun carregarSaloes() {
         db.collection("saloes").get()
             .addOnSuccessListener { result ->
@@ -140,13 +145,17 @@ class ClienteHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.menu_agendamentos -> {
+            R.id.menu_home_salao -> {
+                startActivity(Intent(this, ClienteHomeActivity::class.java))
+            }
+
+            R.id.menu_agendamentos_salao -> {
                 startActivity(Intent(this, AgendamentosClienteActivity::class.java))
             }
+
             R.id.menu_sair -> {
                 auth.signOut()
                 Toast.makeText(this, "Sessão encerrada", Toast.LENGTH_SHORT).show()
-
                 val intent = Intent(this, LoginActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
                 startActivity(intent)
@@ -157,3 +166,5 @@ class ClienteHomeActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         return true
     }
 }
+
+

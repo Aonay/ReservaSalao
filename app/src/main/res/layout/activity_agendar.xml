@@ -16,7 +16,7 @@
         <LinearLayout
             android:id="@+id/customToolbar"
             android:layout_width="420dp"
-            android:layout_height="92dp"
+            android:layout_height="139dp"
             android:background="@color/app_theme"
             android:gravity="center_vertical"
             android:orientation="horizontal"
@@ -30,6 +30,8 @@
                 android:id="@+id/logoImage"
                 android:layout_width="143dp"
                 android:layout_height="85dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="1dp"
                 android:contentDescription="Logo"
                 android:src="@drawable/aura" />
 
@@ -47,13 +49,11 @@
                 android:src="@drawable/ic_menu"
                 app:tint="@color/app_theme_light" />
         </LinearLayout>
-
-        <!-- Conteúdo da tela com ScrollView -->
         <ScrollView
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:padding="16dp"
-            app:layout_constraintTop_toBottomOf="@+id/customToolbar"
+            app:layout_constraintTop_toBottomOf="@id/customToolbar"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
@@ -63,12 +63,33 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <ImageView
-                    android:id="@+id/imgSalaoItem"
+                <TextView
+                    android:id="@+id/txtTitulo"
                     android:layout_width="match_parent"
-                    android:layout_height="185dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/ic_launcher_background" />
+                    android:layout_height="wrap_content"
+                    android:text="Agende um horário"
+                    android:textColor="?attr/colorOnBackground"
+                    android:textSize="26sp"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/afacad_bold"
+                    android:gravity="center"
+                    android:paddingBottom="24dp" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="8dp"
+                    android:layout_marginBottom="16dp">
+
+                    <ImageView
+                        android:id="@+id/imgSalaoItem"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_launcher_background"
+                        android:contentDescription="Imagem do salão" />
+                </com.google.android.material.card.MaterialCardView>
 
                 <TextView
                     android:id="@+id/txtNomeSalao"
@@ -76,55 +97,65 @@
                     android:layout_height="wrap_content"
                     android:text="Nome do Salão"
                     android:textStyle="bold"
-                    android:textSize="20sp"
-                    android:layout_marginBottom="16dp" />
+                    android:textSize="22sp"
+                    android:textColor="?attr/colorOnBackground"
+                    android:layout_marginBottom="12dp" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Serviço:" />
+                    android:text="Serviço:"
+                    android:textColor="?attr/colorOnBackground"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="8dp" />
 
                 <Spinner
                     android:id="@+id/spinnerServicos"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    android:minHeight="48dp" />
+                    android:layout_height="48dp"
+                    android:backgroundTint="?attr/colorSurfaceVariant"
+                    android:layout_marginBottom="24dp" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    app:hintEnabled="true"
+                    android:layout_marginBottom="16dp"
                     android:hint="Data">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/edtData"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:focusable="false"/>
+                        android:focusable="false"
+                        android:inputType="date" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    app:hintEnabled="true"
+                    android:layout_marginBottom="32dp"
                     android:hint="Horário">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/edtHorario"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:focusable="false"/>
+                        android:focusable="false"
+                        android:inputType="time" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <Button
                     android:id="@+id/btnAgendar"
-                    style="@style/MeuBotaoPadrao"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Agendar" />
+                    android:layout_height="56dp"
+                    android:layout_marginBottom="24dp"
+                    android:backgroundTint="@color/app_theme"
+                    android:fontFamily="@font/afacad_bold"
+                    android:text="Agendar"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/white"
+                    android:textSize="18sp"
+                    app:cornerRadius="10dp" />
             </LinearLayout>
         </ScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>

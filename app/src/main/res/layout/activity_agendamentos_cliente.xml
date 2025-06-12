@@ -17,19 +17,21 @@
         <LinearLayout
             android:id="@+id/customToolbar"
             android:layout_width="0dp"
-            android:layout_height="92dp"
+            android:layout_height="139dp"
             android:background="@color/app_theme"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:paddingHorizontal="16dp"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
                 android:id="@+id/logoImage"
                 android:layout_width="143dp"
                 android:layout_height="85dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="1dp"
                 android:contentDescription="Logo"
                 android:src="@drawable/aura" />
 
@@ -48,7 +50,6 @@
                 app:tint="@color/app_theme_light" />
         </LinearLayout>
 
-        <!-- Lista de Agendamentos -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerAgendamentos"
             android:layout_width="0dp"
@@ -59,7 +60,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            tools:listitem="@layout/item_agendamento" />
+            tools:listitem="@layout/item_agendamento"  />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!-- MENU LATERAL -->

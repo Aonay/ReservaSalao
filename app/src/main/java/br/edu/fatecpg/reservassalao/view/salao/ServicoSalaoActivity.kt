@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.ArrayAdapter
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
@@ -11,6 +12,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import br.edu.fatecpg.reservassalao.R
 import br.edu.fatecpg.reservassalao.databinding.ActivityServicoSalaoBinding
 import br.edu.fatecpg.reservassalao.model.CategoriaServico
+import br.edu.fatecpg.reservassalao.model.Salao
 import br.edu.fatecpg.reservassalao.model.Servico
 import br.edu.fatecpg.reservassalao.view.auth.LoginActivity
 import com.google.android.material.navigation.NavigationView
@@ -30,6 +32,8 @@ class ServicoSalaoActivity : AppCompatActivity(), NavigationView.OnNavigationIte
         super.onCreate(savedInstanceState)
         binding = ActivityServicoSalaoBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        carregarNomeSalaoNoHeader()
+
 
         drawerLayout = findViewById(R.id.drawerLayout)
         binding.navigationView.setNavigationItemSelectedListener(this)
@@ -47,6 +51,21 @@ class ServicoSalaoActivity : AppCompatActivity(), NavigationView.OnNavigationIte
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, categorias)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spinnerCategoria.adapter = adapter
+    }
+
+    private fun carregarNomeSalaoNoHeader() {
+        val idSalao = auth.currentUser?.uid ?: return
+        val headerView = binding.navigationView.getHeaderView(0)
+        val txtNomeHeader = headerView.findViewById<TextView>(R.id.txtNomeHeader)
+
+        db.collection("saloes").document(idSalao).get()
+            .addOnSuccessListener { document ->
+                val nomeSalao = document.getString("nome") ?: "Nome do Salão"
+                txtNomeHeader.text = nomeSalao
+            }
+            .addOnFailureListener {
+                txtNomeHeader.text = "Erro ao carregar"
+            }
     }
 
     private fun setupSalvarButton() {
