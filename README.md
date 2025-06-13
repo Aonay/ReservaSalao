@@ -10,20 +10,6 @@
 
 ---
 
-
-## 📸 Capturas de Tela
-
-![Inicio](docs/print/inicial.png)
-![Login](docs/print/login.png)
-![Home](docs/print/home.png)
-![Menu](docs/print/menu.png)
-![Home-Cliente](docs/print/home-cliente.png)
-![Reservas](docs/print/agendamento.png)
-![Agenda](docs/print/agenda.png)
-![Agendar](docs/print/agendar.png)
-
----
-
 ## ✨ Visão Geral
 
 O **Aura TECH** é um aplicativo desenvolvido em **Kotlin com Android Studio**, voltado para o agendamento de serviços em salões de beleza. Ele permite que:
@@ -121,6 +107,19 @@ Distribuído sob a licença MIT. Veja `LICENSE` para mais detalhes.
 - Notificações push para lembretes de agendamento
 - Pagamento digital via Pix ou cartão
 - Avaliação de serviços e salões
+
+---
+
+## 📸 Capturas de Tela
+
+![Inicio](docs/print/inicial.png)
+![Login](docs/print/login.png)
+![Home](docs/print/home.png)
+![Menu](docs/print/menu.png)
+![Home-Cliente](docs/print/home-cliente.png)
+![Reservas](docs/print/agendamento.png)
+![Agenda](docs/print/agenda.png)
+![Agendar](docs/print/agendar.png)
 
 ---
 
