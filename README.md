@@ -19,6 +19,9 @@
 ![Menu](ReservaSalao/app/src/main/res/print/menu.png)
 ![Home-Cliente](ReservaSalao/app/src/main/res/print/home-cliente.png)
 ![Reservas](ReservaSalao/app/src/main/res/print/agendamento.png)
+![Agenda](ReservaSalao/app/src/main/res/print/agenda.png)
+![Agendar](ReservaSalao/app/src/main/res/print/agendar.png)
+
 
 
 ---
