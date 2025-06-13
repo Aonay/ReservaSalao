@@ -13,16 +13,14 @@
 
 ## 📸 Capturas de Tela
 
-![Inicio](ReservaSalao/app/src/main/res/print/inicial.png)
-![Login](ReservaSalao/app/src/main/res/print/login.png)
-![Home](ReservaSalao/app/src/main/res/print/home.png)
-![Menu](ReservaSalao/app/src/main/res/print/menu.png)
-![Home-Cliente](ReservaSalao/app/src/main/res/print/home-cliente.png)
-![Reservas](ReservaSalao/app/src/main/res/print/agendamento.png)
-![Agenda](ReservaSalao/app/src/main/res/print/agenda.png)
-![Agendar](ReservaSalao/app/src/main/res/print/agendar.png)
-
-
+![Inicio](docs/print/inicial.png)
+![Login](docs/print/login.png)
+![Home](docs/print/home.png)
+![Menu](docs/print/menu.png)
+![Home-Cliente](docs/print/home-cliente.png)
+![Reservas](docs/print/agendamento.png)
+![Agenda](docs/print/agenda.png)
+![Agendar](docs/print/agendar.png)
 
 ---
 
